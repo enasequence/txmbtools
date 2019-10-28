@@ -1,0 +1,5 @@
+REFERENCEDATASETNAME valid_f_missing_insdc_acc_and_range_t
+LOCALTAXONOMY NCBI
+LOCALTAXONOMYVERSION
+FASTA Test_Files/valid.fasta.gz
+TABLE Test_Files/missing_insdc_acc_and_range.tsv.gz

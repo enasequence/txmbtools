@@ -1,0 +1,5 @@
+REFERENCEDATASETNAME non_ncbi_no_tax_ids
+LOCALTAXONOMY other_tax_system
+LOCALTAXONOMYVERSION
+FASTA Test_Files/valid.fasta.gz
+TABLE Test_Files/empty_taxid_column.tsv.gz

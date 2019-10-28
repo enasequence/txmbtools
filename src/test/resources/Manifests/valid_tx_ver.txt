@@ -1,0 +1,5 @@
+REFERENCEDATASETNAME valid_tx_ver
+LOCALTAXONOMY tax_sys
+LOCALTAXONOMYVERSION 1
+FASTA Test_Files/valid.fasta.gz
+TABLE Test_Files/valid.tsv.gz

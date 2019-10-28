@@ -1,0 +1,5 @@
+REFERENCEDATASETNAME empty_id_f_valid_t
+LOCALTAXONOMY NCBI
+LOCALTAXONOMYVERSION
+FASTA Test_Files/empty_id.fasta.gz
+TABLE Test_Files/valid.tsv.gz

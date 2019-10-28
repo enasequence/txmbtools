@@ -32,7 +32,7 @@ public class MetadataTableValidatorTests {
 
     @org.junit.Test
     public void validateInsdcSequenceAccession() {
-        Result validateInsdcSequenceAccessionResult = JUnitCore.runClasses(ValidateInsdcSequenceAccessionTests.class);
+        Result validateInsdcSequenceAccessionResult = JUnitCore.runClasses(ValidateInsdcSequenceAccessionTests.class); // TODO: This one next
     }
 
     @org.junit.Test

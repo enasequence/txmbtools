@@ -1,0 +1,5 @@
+REFERENCEDATASETNAME valid_f_missing_taxon_name_t
+LOCALTAXONOMY NCBI
+LOCALTAXONOMYVERSION
+FASTA Test_Files/valid.fasta.gz
+TABLE Test_Files/missing_taxon_name.tsv.gz

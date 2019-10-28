@@ -1,0 +1,5 @@
+REFERENCEDATASETNAME valid_submission
+LOCALTAXONOMY NCBI
+LOCALTAXONOMYVERSION
+FASTA Test_Files/valid.fasta.gz
+TABLE Test_Files/missing_lineage.tsv.gz
