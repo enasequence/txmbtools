@@ -29,6 +29,10 @@ public class MetadataTableValidator {
         this.ncbiTax = ncbiTax;
     }
 
+    public MetadataTableValidator() {
+
+    }
+
     public ValidationResult validateMetadataTable() {
 
     }

@@ -17,7 +17,7 @@ public class MetadataTableValidatorTests {
 
     @org.junit.Test
     public void validateMandatoryHeaders() {
-        Result validateMandatoryHeadersResult = JUnitCore.runClasses(ValidateMandatoryHeadersTests.class);
+        Result validateMandatoryHeadersResult = JUnitCore.runClasses(ValidateMandatoryHeadersTests.class); // TODO: This one next
     }
 
     @org.junit.Test
@@ -32,7 +32,7 @@ public class MetadataTableValidatorTests {
 
     @org.junit.Test
     public void validateInsdcSequenceAccession() {
-        Result validateInsdcSequenceAccessionResult = JUnitCore.runClasses(ValidateInsdcSequenceAccessionTests.class); // TODO: This one next
+        Result validateInsdcSequenceAccessionResult = JUnitCore.runClasses(ValidateInsdcSequenceAccessionTests.class);
     }
 
     @org.junit.Test
