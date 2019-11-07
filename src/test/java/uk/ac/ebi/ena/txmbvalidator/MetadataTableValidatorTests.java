@@ -12,12 +12,12 @@ public class MetadataTableValidatorTests {
 
     @org.junit.Test
     public void openMetadataTable() {
-        Result openMetadataTableResult = JUnitCore.runClasses(OpenMetadataTableTests.class); // TODO
+        Result openMetadataTableResult = JUnitCore.runClasses(OpenMetadataTableTests.class);
     }
 
     @org.junit.Test
     public void validategetHeaderList() {
-        Result validategetHeaderList = JUnitCore.runClasses(GetHeaderListTests.class); // TODO
+        Result validategetHeaderList = JUnitCore.runClasses(GetHeaderListTests.class);
     }
 
     @org.junit.Test
@@ -32,7 +32,7 @@ public class MetadataTableValidatorTests {
 
     @org.junit.Test
     public void validateCustomHeaders() {
-        Result validateCustomHeadersResult = JUnitCore.runClasses(ValidateCustomHeadersTests.class); // TODO
+        Result validateCustomHeadersResult = JUnitCore.runClasses(ValidateCustomHeadersTests.class);
     }
 
     @org.junit.Test

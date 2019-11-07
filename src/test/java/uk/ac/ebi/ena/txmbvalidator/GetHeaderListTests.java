@@ -2,6 +2,7 @@ package uk.ac.ebi.ena.txmbvalidator;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
@@ -15,6 +16,7 @@ import java.util.zip.GZIPInputStream;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(Parameterized.class)
 public class GetHeaderListTests {
 
     private static final String RESOURCETSVDIR = "src\\test\\resources\\TSV\\";

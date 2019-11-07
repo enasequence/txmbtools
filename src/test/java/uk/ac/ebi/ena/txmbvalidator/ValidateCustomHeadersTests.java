@@ -1,5 +1,6 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
@@ -12,9 +13,9 @@ import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(Parameterized.class)
 public class ValidateCustomHeadersTests {
 
-    private static final String RESOURCETSVDIR = "src\\test\\resources\\TSV\\";
     private MetadataTableValidator mtv;
     private List<String> testHeaders;
     private HashMap<String, String> testCustomCols;
@@ -34,8 +35,7 @@ public class ValidateCustomHeadersTests {
             .map(Enum::name)
             .collect(Collectors.toList());
 
-
-    public void validateCustomHeadersTests(List<String> additionalHeads, HashMap<String, String> customColHash, boolean expected) {
+    public ValidateCustomHeadersTests(List<String> additionalHeads, HashMap<String, String> customColHash, boolean expected) {
         this.testHeaders = correctHeaders;
         testHeaders.addAll(additionalHeads);
         this.testCustomCols = customColHash;
@@ -59,7 +59,7 @@ public class ValidateCustomHeadersTests {
     }
 
     @org.junit.Test
-    public void checkIdentifier() {
+    public void validateCustomHeaders() {
         mtv.validateCustomHeaders(testHeaders, testCustomCols);
         assertEquals(mtv.getValid(), expected);
     }

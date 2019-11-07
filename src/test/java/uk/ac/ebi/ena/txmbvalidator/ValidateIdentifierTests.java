@@ -1,5 +1,6 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
@@ -8,13 +9,14 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(Parameterized.class)
 public class ValidateIdentifierTests {
 
     private MetadataTableValidator mtv;
     private boolean expected;
     private String localIdentifier;
 
-    public void validateIdentifierTests(String localIdentifier, boolean expected) {
+    public void ValidateIdentifierTests(String localIdentifier, boolean expected) {
         this.localIdentifier = localIdentifier;
         this.expected = expected;
     }

@@ -1,11 +1,13 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.util.Arrays;
 import java.util.Collection;
 
+@RunWith(Parameterized.class)
 public class ValidateMandatoryHeadersTests {
 
     private static final String RESOURCETSVDIR = "src\\test\\resources\\TSV\\";
