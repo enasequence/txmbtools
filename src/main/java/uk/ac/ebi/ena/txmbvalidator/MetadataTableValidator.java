@@ -1,10 +1,13 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 public class MetadataTableValidator {
@@ -16,11 +19,21 @@ public class MetadataTableValidator {
             "local_lineage",
             "ncbi_tax_id"};
     private final String CHARACTER_REGEX = "^[A-Za-z0-9_]+$";
-    private String[] local_identifiers;
+    private String[] localIdentifiers;
     private String metadataTableFilename;
     private File metadataTableLogFile;
     private ValidationResult metadataTableValidationResult;
     private boolean ncbiTax;
+
+    public enum MandatoryHeaders {
+        local_identifier,
+        insdc_sequence_accession,
+        insdc_sequence_range,
+        local_organism_name,
+        local_lineage,
+        ncbi_tax_id
+    }
+
 
     public MetadataTableValidator(String metadataTableFilename, ValidationResult manifestValidationResult, boolean ncbiTax) {
         this.metadataTableFilename = metadataTableFilename;
@@ -34,18 +47,30 @@ public class MetadataTableValidator {
     }
 
     public ValidationResult validateMetadataTable() {
+        return null;
+    }
+
+    public CSVParser openMetadataTable(String metadataTableFilename) {
+        return null;
+    }
+
+    public List<String> getHeaderList(CSVParser parser) {
+        return null;
+    }
+
+    public void validateNumberOfColumns(List<String> headers, HashMap<String, String> customColumns) {
 
     }
 
-    public Iterable<CSVRecord> openMetadataTable() {
+    public void validateMandatoryHeaders(List<String> headers) {
 
     }
 
-    public String[] validateMandatoryHeaders() {
+    public void validateCustomHeaders(List<String> headers, HashMap<String, String> customColumns) {
 
     }
 
-    public void validateCustomHeaders() {
+    public void validateRecord(CSVRecord record) {
 
     }
 
@@ -73,28 +98,12 @@ public class MetadataTableValidator {
 
     }
 
-    public String[] getLocal_identifiers() {
-        return local_identifiers;
+    public String[] getLocalIdentifiers() {
+        return localIdentifiers;
     }
 
     public boolean getValid() {
         return metadataTableValidationResult.isValid();
     }
 
-//    public static void trial() {
-//
-//       try {
-//
-//           BufferedReader bf = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream("C:\\Users\\holt\\IdeaProjects\\txmb-validator\\src\\test\\resources\\TSV\\valid.tsv.gz"))));
-//           Reader in = new FileReader("C:\\Users\\holt\\IdeaProjects\\txmb-validator\\src\\test\\resources\\TSV\\valid.tsv.gz");
-//           Iterable<CSVRecord> records = CSVFormat.TDF.withFirstRecordAsHeader().parse(bf);
-//
-//           for (CSVRecord record : records) {
-//               System.out.println(record.get("local_identifier"));
-//           }
-//       } catch ( Exception ex ) {
-//           System.out.println(ex);
-//       }
-//    }
-//
 }

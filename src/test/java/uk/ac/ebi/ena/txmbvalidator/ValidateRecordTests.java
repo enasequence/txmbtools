@@ -6,18 +6,14 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
-
-public class OpenMetadataTableTests {
+public class ValidateRecordTests {
 
     private static final String RESOURCETSVDIR = "src\\test\\resources\\TSV\\";
     private MetadataTableValidator mtv;
-    private String metadataTableFilename;
     private boolean expected;
 
-    public void OpenMetadataTableTests(String metadataTableFilename, boolean expected) {
-        this.metadataTableFilename = metadataTableFilename;
-        this.expected = expected;
+    public ValidateRecordTests() {
+
     }
 
     @org.junit.Before
@@ -29,14 +25,12 @@ public class OpenMetadataTableTests {
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][]{
-                {(RESOURCETSVDIR + "valid.tsv.gz"), true},
-                {(RESOURCETSVDIR + "valid_not_compressed.gz"), false}
+
         });
     }
 
     @org.junit.Test
-    public void checkIdentifier() {
-        mtv.openMetadataTable(metadataTableFilename);
-        assertEquals(mtv.getValid(), expected);
+    public void validateRecord() {
+
     }
 }

@@ -7,22 +7,37 @@ public class MetadataTableValidatorTests {
 
     @org.junit.Test
     public void validateMetadataTable() {
-        Result validateMetadataTableResult = JUnitCore.runClasses(ValidateMetadataTableTests.class);
+        Result validateMetadataTableResult = JUnitCore.runClasses(ValidateMetadataTableTests.class); // TODO
     }
 
     @org.junit.Test
     public void openMetadataTable() {
-        Result openMetadataTableResult = JUnitCore.runClasses(OpenMetadataTableTests.class);
+        Result openMetadataTableResult = JUnitCore.runClasses(OpenMetadataTableTests.class); // TODO
+    }
+
+    @org.junit.Test
+    public void validategetHeaderList() {
+        Result validategetHeaderList = JUnitCore.runClasses(GetHeaderListTests.class); // TODO
+    }
+
+    @org.junit.Test
+    public void validateNumberOfColumns() {
+        Result validateNumberOfColumnsResult = JUnitCore.runClasses(ValidateNumberOfColumnsTests.class); // TODO
     }
 
     @org.junit.Test
     public void validateMandatoryHeaders() {
-        Result validateMandatoryHeadersResult = JUnitCore.runClasses(ValidateMandatoryHeadersTests.class); // TODO: This one next
+        Result validateMandatoryHeadersResult = JUnitCore.runClasses(ValidateMandatoryHeadersTests.class); // TODO
     }
 
     @org.junit.Test
     public void validateCustomHeaders() {
-        Result validateCustomHeadersResult = JUnitCore.runClasses(ValidateCustomHeadersTests.class);
+        Result validateCustomHeadersResult = JUnitCore.runClasses(ValidateCustomHeadersTests.class); // TODO
+    }
+
+    @org.junit.Test
+    public void validateRecordTests() {
+        Result validateRecordResult = JUnitCore.runClasses(ValidateRecordTests.class); // TODO
     }
 
     @org.junit.Test
