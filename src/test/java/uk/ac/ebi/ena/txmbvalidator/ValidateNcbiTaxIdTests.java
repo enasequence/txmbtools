@@ -1,5 +1,6 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
@@ -8,6 +9,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(Parameterized.class)
 public class ValidateNcbiTaxIdTests {
 
     private String taxId;
@@ -15,7 +17,7 @@ public class ValidateNcbiTaxIdTests {
     private boolean ncbiTax;
     private MetadataTableValidator mtv;
 
-    public void validateNcbiTaxIdTests(String taxId, boolean ncbiTax, boolean expected) {
+    public ValidateNcbiTaxIdTests(String taxId, boolean ncbiTax, boolean expected) {
         this.taxId = taxId;
         this.ncbiTax = ncbiTax;
         this.expected = expected;

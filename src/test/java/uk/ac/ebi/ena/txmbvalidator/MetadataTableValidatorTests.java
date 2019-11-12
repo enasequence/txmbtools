@@ -7,7 +7,7 @@ public class MetadataTableValidatorTests {
 
     @org.junit.Test
     public void validateMetadataTable() {
-        Result validateMetadataTableResult = JUnitCore.runClasses(ValidateMetadataTableTests.class); // TODO
+        Result validateMetadataTableResult = JUnitCore.runClasses(ValidateMetadataTableTests.class);
     }
 
     @org.junit.Test

@@ -3,6 +3,8 @@ package uk.ac.ebi.ena.txmbvalidator;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import uk.ac.ebi.ena.webin.cli.validator.message.ValidationMessage;
+import uk.ac.ebi.ena.webin.cli.validator.message.ValidationOrigin;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.*;
@@ -24,6 +26,7 @@ public class MetadataTableValidator {
     private File metadataTableLogFile;
     private ValidationResult metadataTableValidationResult;
     private boolean ncbiTax;
+    private int linecount;
 
     public enum MandatoryHeaders {
         local_identifier,
@@ -48,6 +51,7 @@ public class MetadataTableValidator {
 
     public ValidationResult validateMetadataTable() {
         return null;
+//      remember to increment linecount
     }
 
     public CSVParser openMetadataTable(String metadataTableFilename) {
@@ -95,7 +99,41 @@ public class MetadataTableValidator {
     }
 
     public void validateNcbiTaxId(String ncbiTaxId, boolean ncbiTax) {
+        int taxIdAsInt;
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", linecount);
 
+        if (ncbiTaxId == null || ncbiTaxId.isEmpty()) {
+            if (!ncbiTax) {
+                return;
+            } else {
+                ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Using NCBI Taxonomy database but no Tax ID given");
+                validationMessage.appendOrigin(validationOrigin);
+                metadataTableValidationResult.add(validationMessage);
+            }
+        } else {
+            if (!ncbiTax) {
+                ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "NCBI Tax ID given but not specified to be using NCBI Taxonomy");
+                validationMessage.appendOrigin(validationOrigin);
+                metadataTableValidationResult.add(validationMessage);
+            }
+        }
+
+        try {
+            taxIdAsInt = Integer.parseInt(ncbiTaxId);
+        } catch (NumberFormatException ex) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "NCBI Tax IDs must be valid integers: '" + ncbiTaxId + "' is not acceptable");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+            return;
+        }
+
+        try {
+            assert(taxIdAsInt > 0 && taxIdAsInt < 100_000_000);
+        } catch (AssertionError ex) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Value '" + ncbiTaxId + "' is outside valid range for tax IDs");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+        }
     }
 
     public String[] getLocalIdentifiers() {
