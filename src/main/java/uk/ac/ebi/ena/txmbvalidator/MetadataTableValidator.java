@@ -95,7 +95,17 @@ public class MetadataTableValidator {
     }
 
     public void validateLocalLineage(String localLineage) {
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", linecount);
 
+        if (localLineage == null || localLineage.isEmpty()) {
+            return;
+        }
+
+        if (localLineage.length() < 10) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.INFO, "Lineage appears to short to be valid");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+        }
     }
 
     public void validateNcbiTaxId(String ncbiTaxId, boolean ncbiTax) {
