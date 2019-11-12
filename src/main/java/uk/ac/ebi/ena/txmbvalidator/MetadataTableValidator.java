@@ -91,7 +91,20 @@ public class MetadataTableValidator {
     }
 
     public void validateLocalOrganismName(String localOrganismName) {
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", linecount);
 
+        if (localOrganismName == null || localOrganismName.isEmpty()) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Organism name must be provided for every record");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+            return;
+        }
+
+        if (localOrganismName.length() < 5) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Organism name appears too short to be valid");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+        }
     }
 
     public void validateLocalLineage(String localLineage) {
@@ -102,7 +115,7 @@ public class MetadataTableValidator {
         }
 
         if (localLineage.length() < 10) {
-            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.INFO, "Lineage appears to short to be valid");
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.INFO, "Lineage appears too short to be valid");
             validationMessage.appendOrigin(validationOrigin);
             metadataTableValidationResult.add(validationMessage);
         }
