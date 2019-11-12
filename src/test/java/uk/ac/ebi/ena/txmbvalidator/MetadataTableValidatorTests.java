@@ -22,12 +22,12 @@ public class MetadataTableValidatorTests {
 
     @org.junit.Test
     public void validateNumberOfColumns() {
-        Result validateNumberOfColumnsResult = JUnitCore.runClasses(ValidateNumberOfColumnsTests.class); // TODO
+        Result validateNumberOfColumnsResult = JUnitCore.runClasses(ValidateNumberOfColumnsTests.class);
     }
 
     @org.junit.Test
     public void validateMandatoryHeaders() {
-        Result validateMandatoryHeadersResult = JUnitCore.runClasses(ValidateMandatoryHeadersTests.class); // TODO
+        Result validateMandatoryHeadersResult = JUnitCore.runClasses(ValidateMandatoryHeadersTests.class);
     }
 
     @org.junit.Test
@@ -37,7 +37,7 @@ public class MetadataTableValidatorTests {
 
     @org.junit.Test
     public void validateRecordTests() {
-        Result validateRecordResult = JUnitCore.runClasses(ValidateRecordTests.class); // TODO
+        Result validateRecordResult = JUnitCore.runClasses(ValidateRecordTests.class);
     }
 
     @org.junit.Test

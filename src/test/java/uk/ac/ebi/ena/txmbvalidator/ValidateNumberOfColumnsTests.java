@@ -21,6 +21,7 @@ public class ValidateNumberOfColumnsTests {
     private HashMap<String, String> testCustomCols;
     private boolean expected;
 
+    private static final HashMap<String, String> noCols = new HashMap<>();
     private static final HashMap<String, String> twoCols = new HashMap<String, String>() {{
         put("colName1", "colDesc1");
         put("colName2", "colDesc2");
@@ -39,7 +40,7 @@ public class ValidateNumberOfColumnsTests {
     public ValidateNumberOfColumnsTests(List<String> testHeaders, List<String> additionalHeaders, HashMap<String, String> testCustomCols, boolean expected) {
         this.testHeaders = testHeaders;
         this.testHeaders.addAll(additionalHeaders);
-        this.
+        this.testCustomCols = testCustomCols;
         this.expected = expected;
     }
 
@@ -52,13 +53,16 @@ public class ValidateNumberOfColumnsTests {
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][]{
-                {correctHeaders, Arrays.asList(),  }
+                {correctHeaders, Arrays.asList(), noCols, true},
+                {correctHeaders, twoCols.keySet(), twoCols, true},
+                {correctHeaders, Arrays.asList(), twoCols, false},
+                {correctHeaders, twoCols.keySet(), noCols, false}
         });
     }
 
     @org.junit.Test
     public void validateNumberOfColumns() {
-        mtv.validateNumberOfColumns();
+        mtv.validateNumberOfColumns(testHeaders, testCustomCols);
         assertEquals(mtv.getValid(), expected);
     }
 }

@@ -6,8 +6,14 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(Parameterized.class)
 public class ValidateMetadataTableTests {
+
+    private static final String RESOURCETSVDIR = "src\\test\\resources\\TSV\\";
+    private MetadataTableValidator mtv;
+    private boolean expected;
 
     public void ValidateMetadataTableTests() {
 
@@ -26,7 +32,8 @@ public class ValidateMetadataTableTests {
     }
 
     @org.junit.Test
-    public void checkIdentifier() {
-
+    public void validateMetadataTable() {
+        mtv.validateMetadataTable();
+        assertEquals(expected, mtv.getValid());
     }
 }
