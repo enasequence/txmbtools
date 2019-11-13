@@ -6,6 +6,7 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,6 +17,7 @@ public class ValidateNcbiTaxIdTests {
     private boolean expected;
     private boolean ncbiTax;
     private MetadataTableValidator mtv;
+    private static final HashMap<String, String> noCols = new HashMap<>();
 
     public ValidateNcbiTaxIdTests(String taxId, boolean ncbiTax, boolean expected) {
         this.taxId = taxId;
@@ -26,7 +28,7 @@ public class ValidateNcbiTaxIdTests {
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, ncbiTax);
+        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, ncbiTax, noCols);
     }
 
     @Parameterized.Parameters

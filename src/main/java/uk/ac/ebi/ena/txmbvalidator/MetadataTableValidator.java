@@ -27,6 +27,7 @@ public class MetadataTableValidator {
     private ValidationResult metadataTableValidationResult;
     private String metadataTableFilename;
     private File metadataTableLogFile;
+    private HashMap<String, String> customColumns;
     private ArrayList<String> localIdentifiers = new ArrayList<String>();
     private boolean ncbiTax;
     private int linecount;
@@ -41,11 +42,12 @@ public class MetadataTableValidator {
     }
 
 
-    public MetadataTableValidator(String metadataTableFilename, ValidationResult manifestValidationResult, boolean ncbiTax) {
+    public MetadataTableValidator(String metadataTableFilename, ValidationResult manifestValidationResult, boolean ncbiTax, HashMap<String, String> customColumns) {
         this.metadataTableFilename = metadataTableFilename;
         this.metadataTableLogFile = new File(metadataTableFilename + ".report");
         this.metadataTableValidationResult = new ValidationResult(manifestValidationResult, metadataTableLogFile);
         this.ncbiTax = ncbiTax;
+        this.customColumns = customColumns;
     }
 
     public MetadataTableValidator() {
@@ -54,8 +56,8 @@ public class MetadataTableValidator {
 
     public ValidationResult validateMetadataTable() {
         CSVParser metadataTableParser = openMetadataTable(this.metadataTableFilename);
-//        getHeaderList();
-//        validateNumberOfColumns();
+        List<String> fileHeaders = getHeaderList(metadataTableParser);
+        validateNumberOfColumns(fileHeaders, customColumns);
 //        validateMandatoryHeaders();
 //        validateCustomHeaders();
 //      TODO and now loop through CSV records
@@ -89,7 +91,8 @@ public class MetadataTableValidator {
     }
 
     public List<String> getHeaderList(CSVParser parser) {
-        return null;
+        List<String> fileHeaders = parser.getHeaderNames();
+        return fileHeaders;
     }
 
     public void validateNumberOfColumns(List<String> headers, HashMap<String, String> customColumns) {

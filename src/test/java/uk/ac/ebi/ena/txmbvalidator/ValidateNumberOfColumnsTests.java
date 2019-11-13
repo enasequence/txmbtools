@@ -47,7 +47,7 @@ public class ValidateNumberOfColumnsTests {
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false);
+        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false, noCols);
     }
 
     @Parameterized.Parameters

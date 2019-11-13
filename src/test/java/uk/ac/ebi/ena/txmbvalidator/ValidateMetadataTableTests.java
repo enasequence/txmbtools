@@ -6,6 +6,7 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,8 +17,9 @@ public class ValidateMetadataTableTests {
     private MetadataTableValidator mtv;
     private String metadataTableFilename;
     private boolean expected;
+    private static final HashMap<String, String> noCols = new HashMap<>();
 
-    public void ValidateMetadataTableTests(String metadataTableFilename, boolean expected) {
+    public ValidateMetadataTableTests(String metadataTableFilename, boolean expected) {
         this.metadataTableFilename = metadataTableFilename;
         this.expected = expected;
     }
@@ -25,7 +27,7 @@ public class ValidateMetadataTableTests {
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator(metadataTableFilename, emptyValidationResult, false);
+        mtv = new MetadataTableValidator(metadataTableFilename, emptyValidationResult, false, noCols);
     }
 
     @Parameterized.Parameters

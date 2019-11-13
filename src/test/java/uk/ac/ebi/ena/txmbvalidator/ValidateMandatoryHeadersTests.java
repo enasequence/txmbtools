@@ -6,6 +6,7 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -19,6 +20,7 @@ public class ValidateMandatoryHeadersTests {
     private MetadataTableValidator mtv;
     private List<String> testHeaders;
     private boolean expected;
+    private static final HashMap<String, String> noCols = new HashMap<>();
 
     private static List<String> correctHeaders = Stream.of(MetadataTableValidator.MandatoryHeaders.values())
             .map(Enum::name)
@@ -35,7 +37,7 @@ public class ValidateMandatoryHeadersTests {
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false);
+        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false, noCols);
     }
 
     @Parameterized.Parameters

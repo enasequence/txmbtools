@@ -20,6 +20,7 @@ public class ValidateCustomHeadersTests {
     private List<String> testHeaders;
     private HashMap<String, String> testCustomCols;
     private boolean expected;
+    private static final HashMap<String, String> noCols = new HashMap<>();
 
     private static final HashMap<String, String> twoCols = new HashMap<String, String>() {{
         put("colName1", "colDesc1");
@@ -45,7 +46,7 @@ public class ValidateCustomHeadersTests {
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false);
+        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false, noCols);
     }
 
     @Parameterized.Parameters

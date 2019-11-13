@@ -6,6 +6,7 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,6 +17,7 @@ public class ValidateInsdcSequenceRangeTests {
     private boolean expected;
     private String insdcSequenceRange;
     private boolean accessionPresent;
+    private static final HashMap<String, String> noCols = new HashMap<>();
 
     public ValidateInsdcSequenceRangeTests(String insdcSequenceRange, boolean accessionPresent, boolean expected) {
         this.insdcSequenceRange = insdcSequenceRange;
@@ -26,7 +28,7 @@ public class ValidateInsdcSequenceRangeTests {
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false);
+        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false, noCols);
     }
 
     @Parameterized.Parameters

@@ -10,6 +10,7 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
@@ -24,6 +25,7 @@ public class ValidateRecordTests {
     private String recordData;
     private CSVRecord record;
     private boolean expected;
+    private static final HashMap<String, String> noCols = new HashMap<>();
 
     public ValidateRecordTests(String[] values, boolean ncbiTax, boolean expected) {
         recordData = String.join(",", values);
@@ -40,7 +42,7 @@ public class ValidateRecordTests {
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false);
+        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false, noCols);
     }
 
     @Parameterized.Parameters

@@ -6,6 +6,7 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,6 +16,7 @@ public class ValidateLocalOrganismNameTests {
     private MetadataTableValidator mtv;
     private boolean expected;
     private String localOrganismName;
+    private static final HashMap<String, String> noCols = new HashMap<>();
 
     public ValidateLocalOrganismNameTests(String localOrganismName, boolean expected) {
         this.localOrganismName = localOrganismName;
@@ -24,7 +26,7 @@ public class ValidateLocalOrganismNameTests {
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false);
+        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false, noCols);
     }
 
     @Parameterized.Parameters
