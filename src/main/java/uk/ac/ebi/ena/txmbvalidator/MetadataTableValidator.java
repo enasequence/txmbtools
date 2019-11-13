@@ -76,12 +76,12 @@ public class MetadataTableValidator {
             metadataTableReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(metadataTableFilename))));
             metadataTableParser = CSVParser.parse(metadataTableReader, CSVFormat.TDF.withFirstRecordAsHeader());
         } catch (FileNotFoundException ex) {
-            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence Metadata Table '" + this.metadataTableFilename + "' could not be found");
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "'" + this.metadataTableFilename + "' could not be found");
             validationMessage.appendOrigin(validationOrigin);
             metadataTableValidationResult.add(validationMessage);
             return null;
         } catch (IOException ex) {
-            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence Metadata Table '" + this.metadataTableFilename + "' could not be read");
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "'" + this.metadataTableFilename + "' could not be read");
             validationMessage.appendOrigin(validationOrigin);
             metadataTableValidationResult.add(validationMessage);
             return null;
@@ -96,7 +96,19 @@ public class MetadataTableValidator {
     }
 
     public void validateNumberOfColumns(List<String> headers, HashMap<String, String> customColumns) {
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", "Header Line");
+        int expectedColumnTotal = MandatoryHeaders.values().length + customColumns.size();
+        int actualColumnTotal = headers.size();
 
+        if (actualColumnTotal > expectedColumnTotal) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "More columns than expected, please ensure any custom columns are described in manifest file");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+        } else if (actualColumnTotal < expectedColumnTotal) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Less columns than expected, please ensure all mandatory headers are included, as well as any custom columns described in manifest");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+        }
     }
 
     public void validateMandatoryHeaders(List<String> headers) {
