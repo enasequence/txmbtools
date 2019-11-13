@@ -1,5 +1,6 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
@@ -8,6 +9,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(Parameterized.class)
 public class ValidateInsdcSequenceAccessionTests {
 
 
@@ -15,7 +17,7 @@ public class ValidateInsdcSequenceAccessionTests {
     private boolean expected;
     private String insdcSequenceAccession;
 
-    public void validateInsdcSequenceAccessionTests(String insdcSequenceAccession, boolean expected) {
+    public ValidateInsdcSequenceAccessionTests(String insdcSequenceAccession, boolean expected) {
         this.insdcSequenceAccession = insdcSequenceAccession;
         this.expected = expected;
     }
@@ -32,7 +34,7 @@ public class ValidateInsdcSequenceAccessionTests {
                 {"LR590077", true},
                 {"not_an_accession", false},
                 {"58LR0077", false},
-                {1, false},
+                {"CABFPT010000044.11", false},
                 {"", true},
                 {null, true}
         });

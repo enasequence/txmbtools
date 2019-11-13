@@ -1,5 +1,6 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -10,6 +11,8 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 public class MetadataTableValidator {
@@ -21,10 +24,10 @@ public class MetadataTableValidator {
             "local_lineage",
             "ncbi_tax_id"};
     private final String CHARACTER_REGEX = "^[A-Za-z0-9_]+$";
-    private String[] localIdentifiers;
+    private ValidationResult metadataTableValidationResult;
     private String metadataTableFilename;
     private File metadataTableLogFile;
-    private ValidationResult metadataTableValidationResult;
+    private String[] localIdentifiers;
     private boolean ncbiTax;
     private int linecount;
 
@@ -82,12 +85,53 @@ public class MetadataTableValidator {
 
     }
 
-    public void validateInsdcSequenceAccession(String insdcSequenceAccession) {
+    public boolean validateInsdcSequenceAccession(String insdcSequenceAccession) {
+        boolean accessionPresent;
+
+        if (insdcSequenceAccession == null || insdcSequenceAccession.isEmpty()) {
+            return accessionPresent = false;
+        } else {
+            accessionPresent = true;
+        }
+
+        Pattern insdcAccessionPattern = Pattern.compile("^[A-Z]{1,6}[0-9]{5,8}(\\.[0-9])?$");
+        Matcher accessionMatch = insdcAccessionPattern.matcher(insdcSequenceAccession);
+        boolean accessionValid = accessionMatch.matches();
+
+        if (accessionValid) {
+            return accessionPresent;
+        } else {
+            ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", linecount);
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "INSDC accession does not appear to be valid; must match regex " + insdcAccessionPattern.pattern());
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+            return accessionPresent;
+        }
 
     }
 
     public void validateInsdcSequenceRange(String insdcSequenceRange, boolean accessionPresent) {
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", linecount);
 
+        if (insdcSequenceRange == null || insdcSequenceRange.isEmpty()) {
+            return;
+        } else if (!insdcSequenceRange.isEmpty() && !accessionPresent) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "An INSDC sequence range was given for a record without an INSDC accession");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+        }
+
+        Pattern sequenceRangePattern = Pattern.compile("^<?\\d+\\.\\.>?\\d+$");
+        Matcher sequenceRangeMatch = sequenceRangePattern.matcher(insdcSequenceRange);
+        boolean validRange = sequenceRangeMatch.matches();
+
+        if (validRange) {
+            return;
+        } else {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence range invalid, must match regex '^<?\\d+\\.\\.>?\\d+$'");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+        }
     }
 
     public void validateLocalOrganismName(String localOrganismName) {
