@@ -16,7 +16,7 @@ public class ValidateIdentifierTests {
     private boolean expected;
     private String localIdentifier;
 
-    public void ValidateIdentifierTests(String localIdentifier, boolean expected) {
+    public ValidateIdentifierTests(String localIdentifier, boolean expected) {
         this.localIdentifier = localIdentifier;
         this.expected = expected;
     }
@@ -31,6 +31,8 @@ public class ValidateIdentifierTests {
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][]{
                 {"anyValidString", true},
+                {"ITS1DB00887249", true},
+                {"ITS1DB-00887249", true},
                 {"", false},
                 {null, false},
                 {"thisNameIsUnacceptablyLongAndWillResultInAnErrorMessageByTheWayTheCharacterLimitIsFifty", false},
@@ -41,6 +43,6 @@ public class ValidateIdentifierTests {
     @org.junit.Test
     public void checkIdentifier() {
         mtv.validateIdentifier(localIdentifier);
-        assertEquals(expected, localIdentifier);
+        assertEquals(expected, mtv.getValid());
     }
 }

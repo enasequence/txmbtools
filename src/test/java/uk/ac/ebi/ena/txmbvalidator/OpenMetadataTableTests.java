@@ -17,7 +17,7 @@ public class OpenMetadataTableTests {
     private String metadataTableFilename;
     private boolean expected;
 
-    public void OpenMetadataTableTests(String metadataTableFilename, boolean expected) {
+    public OpenMetadataTableTests(String metadataTableFilename, boolean expected) {
         this.metadataTableFilename = metadataTableFilename;
         this.expected = expected;
     }
@@ -37,7 +37,7 @@ public class OpenMetadataTableTests {
     }
 
     @org.junit.Test
-    public void checkIdentifier() {
+    public void openMetadataTable() {
         mtv.openMetadataTable(metadataTableFilename);
         assertEquals(mtv.getValid(), expected);
     }

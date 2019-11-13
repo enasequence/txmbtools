@@ -1,6 +1,5 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -9,6 +8,7 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationOrigin;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -27,7 +27,7 @@ public class MetadataTableValidator {
     private ValidationResult metadataTableValidationResult;
     private String metadataTableFilename;
     private File metadataTableLogFile;
-    private String[] localIdentifiers;
+    private ArrayList<String> localIdentifiers = new ArrayList<String>();
     private boolean ncbiTax;
     private int linecount;
 
@@ -53,12 +53,39 @@ public class MetadataTableValidator {
     }
 
     public ValidationResult validateMetadataTable() {
-        return null;
-//      remember to increment linecount
+        CSVParser metadataTableParser = openMetadataTable(this.metadataTableFilename);
+//        getHeaderList();
+//        validateNumberOfColumns();
+//        validateMandatoryHeaders();
+//        validateCustomHeaders();
+//      TODO and now loop through CSV records
+        {linecount++;}
+
+
+        return this.metadataTableValidationResult; // TODO: Probably change this, result is already accessible through MetadataTableValidator object
     }
 
     public CSVParser openMetadataTable(String metadataTableFilename) {
-        return null;
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", linecount);
+        BufferedReader metadataTableReader;
+        CSVParser metadataTableParser;
+
+        try {
+            metadataTableReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(metadataTableFilename))));
+            metadataTableParser = CSVParser.parse(metadataTableReader, CSVFormat.TDF.withFirstRecordAsHeader());
+        } catch (FileNotFoundException ex) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence Metadata Table '" + this.metadataTableFilename + "' could not be found");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+            return null;
+        } catch (IOException ex) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence Metadata Table '" + this.metadataTableFilename + "' could not be read");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+            return null;
+        }
+
+        return metadataTableParser;
     }
 
     public List<String> getHeaderList(CSVParser parser) {
@@ -79,9 +106,46 @@ public class MetadataTableValidator {
 
     public void validateRecord(CSVRecord record) {
 
+        validateIdentifier(record.get("local_identifier"));
+        this.localIdentifiers.add(record.get("local_identifier"));
+
+        boolean insdcAccessionPresent = validateInsdcSequenceAccession(record.get("insdc_sequence_accession"));
+
+        validateInsdcSequenceRange(record.get("insdc_sequence_range"), insdcAccessionPresent);
+
+        validateLocalOrganismName(record.get("local_organism_name"));
+
+        validateLocalLineage(record.get("local_lineage"));
+
+        validateNcbiTaxId(record.get("ncbi_tax_id"), ncbiTax);
+        // Capture identifier
     }
 
     public void validateIdentifier(String sequenceIdentifier) {
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", linecount);
+
+        if (sequenceIdentifier == null || sequenceIdentifier.isEmpty()) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "All records must include a sequence identifier");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+            return;
+        }
+
+        if (sequenceIdentifier.length() > 50) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence identifier is too long (>50)");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+        }
+
+        Pattern identiferPattern = Pattern.compile("^[A-Za-z0-9_.-]+$");
+        Matcher identifierMatch = identiferPattern.matcher(sequenceIdentifier);
+        boolean identifierValid = identifierMatch.matches();
+
+        if (!identifierValid) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence identifier contains invalid characters (Allowed: [A-Za-z0-9_.-] )");
+            validationMessage.appendOrigin(validationOrigin);
+            metadataTableValidationResult.add(validationMessage);
+        }
 
     }
 
@@ -203,7 +267,7 @@ public class MetadataTableValidator {
         }
     }
 
-    public String[] getLocalIdentifiers() {
+    public ArrayList<String> getLocalIdentifiers() {
         return localIdentifiers;
     }
 
@@ -211,4 +275,7 @@ public class MetadataTableValidator {
         return metadataTableValidationResult.isValid();
     }
 
+    public void setNcbiTax(boolean ncbiTax) {
+        this.ncbiTax = ncbiTax;
+    }
 }
