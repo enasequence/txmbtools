@@ -9,6 +9,7 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -48,14 +49,23 @@ public class MetadataTableValidator {
     }
 
     public ValidationResult validateMetadataTable() {
-        CSVParser metadataTableParser = openMetadataTable(this.metadataTableFilename);
-        List<String> fileHeaders = getHeaderList(metadataTableParser);
-        validateNumberOfColumns(fileHeaders, customColumns);
-//        validateMandatoryHeaders();
-//        validateCustomHeaders();
-//      TODO and now loop through CSV records
-        {linecount++;}
 
+        CSVParser metadataTableParser = openMetadataTable(this.metadataTableFilename);
+
+        List<String> fileHeaders = getHeaderList(metadataTableParser);
+
+        validateNumberOfColumns(fileHeaders, customColumns);
+
+        validateMandatoryHeaders(fileHeaders);
+
+        validateCustomHeaders(fileHeaders, customColumns);
+
+        String localIdentifier;
+        for (CSVRecord record : metadataTableParser) {
+            linecount++;
+            localIdentifier = validateRecord(record);
+            localIdentifiers.add(localIdentifier);
+        }
 
         return this.metadataTableValidationResult; // TODO: Probably change this, result is already accessible through MetadataTableValidator object
     }
@@ -118,13 +128,38 @@ public class MetadataTableValidator {
     }
 
     public void validateCustomHeaders(List<String> headers, HashMap<String, String> customColumns) {
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", "Header Line");
 
+        for (String customHeader : customColumns.keySet()) {
+            if (!headers.contains(customHeader)) {
+                ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Custom header '" + customHeader + "' defined in metadata record but not found in table");
+                validationMessage.appendOrigin(validationOrigin);
+                metadataTableValidationResult.add(validationMessage);
+            }
+        }
+
+        for (String tableHeader : headers) {
+            if (!MandatoryHeadersContains(tableHeader) && !customColumns.containsKey(tableHeader)) {
+                ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Custom header '" + tableHeader + "' used in table but not defined in metadata record");
+                validationMessage.appendOrigin(validationOrigin);
+                metadataTableValidationResult.add(validationMessage);
+            }
+        }
     }
 
-    public void validateRecord(CSVRecord record) {
+    public static boolean MandatoryHeadersContains(String testValue) {
 
+        for (MandatoryHeaders header : MandatoryHeaders.values()) {
+            if (header.name().equals(testValue)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String validateRecord(CSVRecord record) {
         validateIdentifier(record.get("local_identifier"));
-        this.localIdentifiers.add(record.get("local_identifier"));
+        String localIdentifier = record.get("local_identifier");
 
         boolean insdcAccessionPresent = validateInsdcSequenceAccession(record.get("insdc_sequence_accession"));
 
@@ -135,7 +170,8 @@ public class MetadataTableValidator {
         validateLocalLineage(record.get("local_lineage"));
 
         validateNcbiTaxId(record.get("ncbi_tax_id"), ncbiTax);
-        // Capture identifier
+
+        return localIdentifier;
     }
 
     public void validateIdentifier(String sequenceIdentifier) {

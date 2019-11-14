@@ -32,13 +32,12 @@ public class ValidateCustomHeadersTests {
         put("colName3", "colDesc3");
     }};
 
-    private List<String> correctHeaders = Stream.of(MetadataTableValidator.MandatoryHeaders.values())
-            .map(Enum::name)
-            .collect(Collectors.toList());
 
     public ValidateCustomHeadersTests(List<String> additionalHeads, HashMap<String, String> customColHash, boolean expected) {
-        this.testHeaders = correctHeaders;
-        testHeaders.addAll(additionalHeads);
+        this.testHeaders = Stream.of(MetadataTableValidator.MandatoryHeaders.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());;
+        this.testHeaders.addAll(additionalHeads);
         this.testCustomCols = customColHash;
         this.expected = expected;
     }
@@ -62,6 +61,6 @@ public class ValidateCustomHeadersTests {
     @org.junit.Test
     public void validateCustomHeaders() {
         mtv.validateCustomHeaders(testHeaders, testCustomCols);
-        assertEquals(mtv.getValid(), expected);
+        assertEquals(expected, mtv.getValid());
     }
 }
