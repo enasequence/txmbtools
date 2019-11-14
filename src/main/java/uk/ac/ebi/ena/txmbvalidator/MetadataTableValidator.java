@@ -296,6 +296,7 @@ public class MetadataTableValidator {
                 ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Using NCBI Taxonomy database but no Tax ID given");
                 validationMessage.appendOrigin(validationOrigin);
                 metadataTableValidationResult.add(validationMessage);
+                return;
             }
         } else {
             if (!ncbiTax) {
@@ -331,8 +332,12 @@ public class MetadataTableValidator {
         return metadataTableValidationResult.isValid();
     }
 
-    // This method needed for test purposes
+    // Methods needed for test purposes
     public void setNcbiTax(boolean ncbiTax) {
         this.ncbiTax = ncbiTax;
+    }
+
+    public void setCustomColumns(HashMap<String, String> customColumns) {
+        this.customColumns = customColumns;
     }
 }
