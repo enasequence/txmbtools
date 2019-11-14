@@ -22,15 +22,14 @@ public class ValidateMandatoryHeadersTests {
     private boolean expected;
     private static final HashMap<String, String> noCols = new HashMap<>();
 
-    private static List<String> correctHeaders = Stream.of(MetadataTableValidator.MandatoryHeaders.values())
-            .map(Enum::name)
-            .collect(Collectors.toList());
-    private static List<String> missingHeader = correctHeaders.subList(0, 2);
 
-
-    public ValidateMandatoryHeadersTests(List<String> testHeaders, List<String> extraHeaders, boolean expected) {
-        this.testHeaders = testHeaders;
-        this.testHeaders.addAll(extraHeaders);
+    public ValidateMandatoryHeadersTests(boolean sublist, List<String> extraHeaders, boolean expected) {
+        this.testHeaders = Stream.of(MetadataTableValidator.MandatoryHeaders.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+        if (sublist) {
+            this.testHeaders = this.testHeaders.subList(0, 2);
+        }
         this.expected = expected;
     }
 
@@ -43,10 +42,10 @@ public class ValidateMandatoryHeadersTests {
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][]{
-                {correctHeaders, Arrays.asList(), true},
-                {missingHeader, Arrays.asList(), false},
-                {correctHeaders, Arrays.asList("extraCol", "anotherExtraCol"), true},
-                {missingHeader, Arrays.asList("extraCol", "anotherExtraCol"), false}
+                {false, Arrays.asList(), true},
+                {true, Arrays.asList(), false},
+                {false, Arrays.asList("extraCol", "anotherExtraCol"), true},
+                {true, Arrays.asList("extraCol", "anotherExtraCol"), false}
         });
     }
 
