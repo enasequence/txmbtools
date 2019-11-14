@@ -16,11 +16,13 @@ public class ValidateMetadataTableTests {
     private static final String RESOURCETSVDIR = "src\\test\\resources\\TSV\\";
     private MetadataTableValidator mtv;
     private String metadataTableFilename;
+    private boolean ncbiTax;
     private boolean expected;
     private static final HashMap<String, String> noCols = new HashMap<>();
 
-    public ValidateMetadataTableTests(String metadataTableFilename, boolean expected) {
+    public ValidateMetadataTableTests(String metadataTableFilename, boolean ncbiTax, boolean expected) {
         this.metadataTableFilename = metadataTableFilename;
+        this.ncbiTax = ncbiTax;
         this.expected = expected;
     }
 
@@ -33,25 +35,27 @@ public class ValidateMetadataTableTests {
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][]{
-                {(RESOURCETSVDIR + "valid.tsv.gz"), true},
-                {(RESOURCETSVDIR + "empty_id_column.tsv.gz"), false},
-                {(RESOURCETSVDIR + "empty_row.tsv.gz"), false},
-                {(RESOURCETSVDIR + "empty_taxid_column.tsv.gz"), true},
-                {(RESOURCETSVDIR + "missing_id_column.tsv.gz"), false},
-                {(RESOURCETSVDIR + "missing_identifier.tsv.gz"), false},
-                {(RESOURCETSVDIR + "missing_insdc_acc_and_range.tsv.gz"), true},
-                {(RESOURCETSVDIR + "missing_insdc_acc.tsv.gz"), false},
-                {(RESOURCETSVDIR + "missing_insdc_range.tsv.gz"), true},
-                {(RESOURCETSVDIR + "missing_lineage.tsv.gz"), true},
-                {(RESOURCETSVDIR + "missing_row.tsv.gz"), true},
-                {(RESOURCETSVDIR + "missing_tax_id.tsv.gz"), true},
-                {(RESOURCETSVDIR + "missing_taxon_name.tsv.gz"), false},
-                {(RESOURCETSVDIR + "valid_w_customs.tsv.gz"), true},
+                {(RESOURCETSVDIR + "valid.tsv.gz"), true, true},
+                {(RESOURCETSVDIR + "empty_id_column.tsv.gz"), true, false},
+                {(RESOURCETSVDIR + "empty_row.tsv.gz"), true, false},
+                {(RESOURCETSVDIR + "empty_taxid_column.tsv.gz"), false, true},
+                {(RESOURCETSVDIR + "missing_id_column.tsv.gz"), true, false},
+                {(RESOURCETSVDIR + "missing_identifier.tsv.gz"), true, false},
+                {(RESOURCETSVDIR + "missing_insdc_acc_and_range.tsv.gz"), true, true},
+                {(RESOURCETSVDIR + "missing_insdc_acc.tsv.gz"), true, false},
+                {(RESOURCETSVDIR + "missing_insdc_range.tsv.gz"), true, true},
+                {(RESOURCETSVDIR + "missing_lineage.tsv.gz"), true, true},
+                {(RESOURCETSVDIR + "missing_row.tsv.gz"), true, true},
+                {(RESOURCETSVDIR + "missing_tax_id.tsv.gz"), true, true},
+                {(RESOURCETSVDIR + "missing_taxon_name.tsv.gz"), true, false},
+                {(RESOURCETSVDIR + "valid_w_customs.tsv.gz"), true, true},
+                {(RESOURCETSVDIR + "valid_not_compressed.tsv.gz"), true, false},
         });
     }
 
     @org.junit.Test
     public void validateMetadataTable() {
+        mtv.setNcbiTax(ncbiTax);
         mtv.validateMetadataTable();
         assertEquals(expected, mtv.getValid());
     }

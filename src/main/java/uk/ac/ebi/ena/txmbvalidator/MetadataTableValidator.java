@@ -57,6 +57,9 @@ public class MetadataTableValidator {
         validateNumberOfColumns(fileHeaders, customColumns);
 
         validateMandatoryHeaders(fileHeaders);
+        if (!this.getValid()) {
+            return null;
+        }
 
         validateCustomHeaders(fileHeaders, customColumns);
 
@@ -328,6 +331,7 @@ public class MetadataTableValidator {
         return metadataTableValidationResult.isValid();
     }
 
+    // This method needed for test purposes
     public void setNcbiTax(boolean ncbiTax) {
         this.ncbiTax = ncbiTax;
     }
