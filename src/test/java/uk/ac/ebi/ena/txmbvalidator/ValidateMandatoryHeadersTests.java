@@ -53,6 +53,6 @@ public class ValidateMandatoryHeadersTests {
     @org.junit.Test
     public void checkIdentifier() {
         mtv.validateMandatoryHeaders(testHeaders);
-        assertEquals(mtv.getValid(), expected);
+        assertEquals(expected, mtv.getValid());
     }
 }

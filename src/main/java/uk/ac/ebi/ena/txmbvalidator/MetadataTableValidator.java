@@ -17,13 +17,6 @@ import java.util.zip.GZIPInputStream;
 
 public class MetadataTableValidator {
 
-    private final String[] MANDATORY_HEADERS = {"local_identifier",
-            "insdc_sequence_accession",
-            "insdc_sequence_range",
-            "local_organism_name",
-            "local_lineage",
-            "ncbi_tax_id"};
-    private final String CHARACTER_REGEX = "^[A-Za-z0-9_]+$";
     private ValidationResult metadataTableValidationResult;
     private String metadataTableFilename;
     private File metadataTableLogFile;
@@ -98,21 +91,8 @@ public class MetadataTableValidator {
     public void validateNumberOfColumns(List<String> headers, HashMap<String, String> customColumns) {
         ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", "Header Line");
 
-//        System.out.println("Custom columns size: " + customColumns.size());
-//        for (String column : customColumns.keySet()) {
-//            System.out.println(column);
-//        }
-
         int expectedColumnTotal = MandatoryHeaders.values().length + customColumns.size();
         int actualColumnTotal = headers.size();
-//
-//        System.out.println("Actual columns:");
-//        for (String header : headers) {
-//            System.out.println(header);
-//        }
-
-        System.out.println("Expected Columns: " + expectedColumnTotal); // TODO REMOVE
-        System.out.println("Actual Columns: " + actualColumnTotal); // TODO REMOVE
 
         if (actualColumnTotal > expectedColumnTotal) {
             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "More columns than expected, please ensure any custom columns are described in manifest file");
@@ -126,7 +106,15 @@ public class MetadataTableValidator {
     }
 
     public void validateMandatoryHeaders(List<String> headers) {
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", "Header Line");
 
+        for (MandatoryHeaders header : MandatoryHeaders.values()) {
+            if (!headers.contains(header.toString())) {
+                ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Mandatory header '" + header + "' not found, all headers must be present even if not used");
+                validationMessage.appendOrigin(validationOrigin);
+                metadataTableValidationResult.add(validationMessage);
+            }
+        }
     }
 
     public void validateCustomHeaders(List<String> headers, HashMap<String, String> customColumns) {
