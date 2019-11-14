@@ -97,8 +97,22 @@ public class MetadataTableValidator {
 
     public void validateNumberOfColumns(List<String> headers, HashMap<String, String> customColumns) {
         ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", "Header Line");
+
+//        System.out.println("Custom columns size: " + customColumns.size());
+//        for (String column : customColumns.keySet()) {
+//            System.out.println(column);
+//        }
+
         int expectedColumnTotal = MandatoryHeaders.values().length + customColumns.size();
         int actualColumnTotal = headers.size();
+//
+//        System.out.println("Actual columns:");
+//        for (String header : headers) {
+//            System.out.println(header);
+//        }
+
+        System.out.println("Expected Columns: " + expectedColumnTotal); // TODO REMOVE
+        System.out.println("Actual Columns: " + actualColumnTotal); // TODO REMOVE
 
         if (actualColumnTotal > expectedColumnTotal) {
             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "More columns than expected, please ensure any custom columns are described in manifest file");

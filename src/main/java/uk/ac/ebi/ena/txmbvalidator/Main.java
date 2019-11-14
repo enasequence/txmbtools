@@ -7,6 +7,7 @@ import uk.ac.ebi.ena.webin.cli.validator.manifest.ReadsManifest;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
@@ -25,7 +26,19 @@ public class Main {
 
 
     public static void main(String[] args) {
+        customCols.put("one", "1");
+        customCols.put("two", "2");
 
+//        arrayPlay(Arrays.asList(customCols.keySet()));
+
+
+    }
+
+    public static void arrayPlay(List<String> keys) {
+        System.out.println(keys);
+    }
+
+    public static void doStuff() {
         MetadataTableValidator mtv = new MetadataTableValidator();
         for (MetadataTableValidator.MandatoryHeaders header : MetadataTableValidator.MandatoryHeaders.values()){
             //System.out.println(header);
@@ -60,7 +73,6 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Total number of columns does not match");
         }
-
     }
 
     public static List<String> csvHandleTrial() {

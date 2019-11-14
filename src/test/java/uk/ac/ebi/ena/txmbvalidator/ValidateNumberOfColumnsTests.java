@@ -26,19 +26,19 @@ public class ValidateNumberOfColumnsTests {
         put("colName1", "colDesc1");
         put("colName2", "colDesc2");
     }};
+    private static final List<String> twoColKeys = Arrays.asList("colName1", "colName2");
     private static final HashMap<String, String> threeCols = new HashMap<String, String>() {{
         put("colName1", "colDesc1");
         put("colName2", "colDesc2");
         put("colName3", "colDesc3");
     }};
+    private static final List<String> threeColKeys = Arrays.asList("colName1", "colName2", "colName3");
 
-    private static List<String> correctHeaders = Stream.of(MetadataTableValidator.MandatoryHeaders.values())
-            .map(Enum::name)
-            .collect(Collectors.toList());
-    private static List<String> missingHeader = correctHeaders.subList(0, 2);
 
-    public ValidateNumberOfColumnsTests(List<String> testHeaders, List<String> additionalHeaders, HashMap<String, String> testCustomCols, boolean expected) {
-        this.testHeaders = testHeaders;
+    public ValidateNumberOfColumnsTests(List<String> additionalHeaders, HashMap<String, String> testCustomCols, boolean expected) {
+        this.testHeaders = Stream.of(MetadataTableValidator.MandatoryHeaders.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
         this.testHeaders.addAll(additionalHeaders);
         this.testCustomCols = testCustomCols;
         this.expected = expected;
@@ -53,16 +53,17 @@ public class ValidateNumberOfColumnsTests {
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][]{
-                {correctHeaders, Arrays.asList(), noCols, true},
-                {correctHeaders, twoCols.keySet(), twoCols, true},
-                {correctHeaders, Arrays.asList(), twoCols, false},
-                {correctHeaders, twoCols.keySet(), noCols, false}
+                {Arrays.asList(), noCols, true},
+                {twoColKeys, twoCols, true},
+                {threeColKeys, threeCols, true},
+                {Arrays.asList(), twoCols, false},
+                {twoColKeys, noCols, false}
         });
     }
 
     @org.junit.Test
     public void validateNumberOfColumns() {
         mtv.validateNumberOfColumns(testHeaders, testCustomCols);
-        assertEquals(mtv.getValid(), expected);
+        assertEquals(expected, mtv.getValid());
     }
 }
