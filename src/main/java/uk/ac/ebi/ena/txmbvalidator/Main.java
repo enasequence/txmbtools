@@ -34,7 +34,8 @@ public class Main {
 
 
         ReadsManifest ma;
-        TaxRefSetManifest mb;
+        TaxRefSetManifest mb = new TaxRefSetManifest();
+
 
     }
 

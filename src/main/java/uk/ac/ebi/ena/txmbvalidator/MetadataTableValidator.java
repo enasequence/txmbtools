@@ -37,7 +37,7 @@ public class MetadataTableValidator {
 
     public MetadataTableValidator(String metadataTableFilename, ValidationResult manifestValidationResult, boolean ncbiTax, HashMap<String, String> customColumns) {
         this.metadataTableFilename = metadataTableFilename;
-        this.metadataTableLogFile = new File(metadataTableFilename + ".report");
+        this.metadataTableLogFile = new File(metadataTableFilename + ".report"); // TODO: Add more detailed path?
         this.metadataTableValidationResult = new ValidationResult(manifestValidationResult, metadataTableLogFile);
         this.ncbiTax = ncbiTax;
         this.customColumns = customColumns;
