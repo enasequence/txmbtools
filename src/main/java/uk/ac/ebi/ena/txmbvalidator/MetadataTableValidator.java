@@ -51,17 +51,18 @@ public class MetadataTableValidator {
     public ValidationResult validateMetadataTable() {
 
         CSVParser metadataTableParser = openMetadataTable(this.metadataTableFilename);
-
-        List<String> fileHeaders = getHeaderList(metadataTableParser);
-
-        validateNumberOfColumns(fileHeaders, customColumns);
-
-        validateMandatoryHeaders(fileHeaders);
         if (!this.getValid()) {
             return null;
         }
 
+        List<String> fileHeaders = getHeaderList(metadataTableParser);
+
+        validateNumberOfColumns(fileHeaders, customColumns);
+        validateMandatoryHeaders(fileHeaders);
         validateCustomHeaders(fileHeaders, customColumns);
+        if (!this.getValid()) {
+            return null;
+        }
 
         String localIdentifier;
         for (CSVRecord record : metadataTableParser) {
@@ -82,7 +83,7 @@ public class MetadataTableValidator {
     }
 
     public CSVParser openMetadataTable(String metadataTableFilename) {
-        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", linecount);
+        ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", "Decompressing");
         BufferedReader metadataTableReader;
         CSVParser metadataTableParser;
 
