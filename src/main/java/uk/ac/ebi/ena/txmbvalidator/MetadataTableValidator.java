@@ -66,8 +66,16 @@ public class MetadataTableValidator {
         String localIdentifier;
         for (CSVRecord record : metadataTableParser) {
             linecount++;
-            localIdentifier = validateRecord(record);
-            localIdentifiers.add(localIdentifier);
+            ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", linecount);
+            try {
+                localIdentifier = validateRecord(record);
+                localIdentifiers.add(localIdentifier);
+            } catch (IllegalArgumentException ex) {
+                ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Full set of columns must be provided even if value is null");
+                validationMessage.appendOrigin(validationOrigin);
+                metadataTableValidationResult.add(validationMessage);
+                return null;
+            }
         }
 
         return this.metadataTableValidationResult; // TODO: Probably change this, result is already accessible through MetadataTableValidator object
@@ -160,7 +168,7 @@ public class MetadataTableValidator {
         return false;
     }
 
-    public String validateRecord(CSVRecord record) {
+    public String validateRecord(CSVRecord record) throws IllegalArgumentException {
         validateIdentifier(record.get("local_identifier"));
         String localIdentifier = record.get("local_identifier");
 

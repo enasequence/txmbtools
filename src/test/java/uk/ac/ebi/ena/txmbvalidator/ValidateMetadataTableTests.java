@@ -56,6 +56,7 @@ public class ValidateMetadataTableTests {
                 {(RESOURCETSVDIR + "missing_taxon_name.tsv.gz"), true, false, false},
                 {(RESOURCETSVDIR + "valid_w_customs.tsv.gz"), true, true, true},
                 {(RESOURCETSVDIR + "valid_not_compressed.tsv.gz"), true, false, false},
+                {(RESOURCETSVDIR + "missing_column.tsv.gz"), false, false, false},
         });
     }
 
