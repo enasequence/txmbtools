@@ -16,7 +16,7 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testImplementation( 'org.mockito:mockito-core:2.23.4' )
-    compile( group: 'uk.ac.ebi.ena.webin-cli', name: 'webin-cli-validator', version: '1.0.7' )
+    compile( group: 'uk.ac.ebi.ena.webin-cli', name: 'webin-cli-validator', version: '1.0.8' )
     compile( group: 'org.apache.commons', name: 'commons-csv', version: '1.7' )
     
 }

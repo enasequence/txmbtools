@@ -3,7 +3,10 @@ package uk.ac.ebi.ena.txmbvalidator;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import uk.ac.ebi.ena.webin.cli.validator.manifest.GenomeManifest;
+import uk.ac.ebi.ena.webin.cli.validator.manifest.Manifest;
 import uk.ac.ebi.ena.webin.cli.validator.manifest.ReadsManifest;
+import uk.ac.ebi.ena.webin.cli.validator.manifest.TaxRefSetManifest;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -29,8 +32,9 @@ public class Main {
         customCols.put("one", "1");
         customCols.put("two", "2");
 
-//        arrayPlay(Arrays.asList(customCols.keySet()));
 
+        ReadsManifest ma;
+        TaxRefSetManifest mb;
 
     }
 

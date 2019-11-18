@@ -9,7 +9,6 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
