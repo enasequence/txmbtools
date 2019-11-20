@@ -336,6 +336,7 @@ public class MetadataTableValidator {
         return metadataTableValidationResult.isValid();
     }
 
+
     // Methods needed for test purposes
     public void setNcbiTax(boolean ncbiTax) {
         this.ncbiTax = ncbiTax;
