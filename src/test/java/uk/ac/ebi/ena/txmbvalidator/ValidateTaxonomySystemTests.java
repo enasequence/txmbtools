@@ -32,7 +32,7 @@ public class ValidateTaxonomySystemTests {
 
     @org.junit.Before
     public void setup() {
-        ValidationResult emptyValidationResult = new ValidationResult(new File("manifest_validation_test.report"));
+        emptyValidationResult = new ValidationResult(new File("manifest_validation_test.report"));
         mrv = new MetadataRecordValidator(emptyValidationResult, "void", "void", nonFile, nonFile, emptyMap);
     }
 
