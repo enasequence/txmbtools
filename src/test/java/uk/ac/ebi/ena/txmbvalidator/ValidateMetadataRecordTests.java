@@ -30,6 +30,7 @@ public class ValidateMetadataRecordTests {
     }};
 
     public ValidateMetadataRecordTests(String taxonomySystem, String taxonomyVersion, File fastaFile, File tabFile, Map<String, String> customFields, boolean expected) {
+        emptyValidationResult = new ValidationResult(new File("manifest_validation_test.report"));
         vmr = new MetadataRecordValidator(emptyValidationResult, taxonomySystem, taxonomyVersion, fastaFile, tabFile, customFields);
         this.expected = expected;
     }
@@ -40,18 +41,17 @@ public class ValidateMetadataRecordTests {
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][] {
-                {"", "", new File(TESTRESOURCEDIR + "\\FASTA\\"), new File (TESTRESOURCEDIR + "\\TSV\\"), emptyMap, },
-                {"NCBI", "1", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File ("\\TSV\\valid.tsv.gz"), emptyMap, true},
-                {"NCBI", "1", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File ("\\TSV\\valid.tsv.gz"), validCustomCols, true},
-                {"NCBI", "1", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File ("\\TSV\\valid.tsv.gz"), tooLongCustomCols, true},
-                {"", "1", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File ("\\TSV\\valid.tsv.gz"), emptyMap, false},
-                {"NCBI", "", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File ("\\TSV\\valid.tsv.gz"), emptyMap, true},
+                {"NCBI", "1", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File (TESTRESOURCEDIR + "\\TSV\\valid.tsv.gz"), emptyMap, true},
+                {"NCBI", "1", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File (TESTRESOURCEDIR + "\\TSV\\valid.tsv.gz"), validCustomCols, true},
+                {"NCBI", "1", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File (TESTRESOURCEDIR + "\\TSV\\valid.tsv.gz"), tooLongCustomCols, false},
+                {"", "1", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File (TESTRESOURCEDIR + "\\TSV\\valid.tsv.gz"), emptyMap, false},
+                {"NCBI", "", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File (TESTRESOURCEDIR + "\\TSV\\valid.tsv.gz"), emptyMap, true},
                 {"NCBI", "1", new File("not\\a\\valid\\path"), new File ( TESTRESOURCEDIR + "\\TSV\\valid.tsv.gz"), emptyMap, false},
                 {"NCBI", "1", new File(TESTRESOURCEDIR + "\\FASTA\\valid.fasta.gz"), new File ("not\\a\\valid\\path"), emptyMap, false},
                 {"", "", new File("not\\a\\valid\\path"), new File ("not\\a\\valid\\path"), emptyMap, false},
                 {"", "", new File("not\\a\\valid\\path"), new File ("not\\a\\valid\\path"), validCustomCols, false},
                 {"", "", new File("not\\a\\valid\\path"), new File ("not\\a\\valid\\path"), tooLongCustomCols, false},
-                {"NCBI", "1", null, new File ("\\TSV\\valid.tsv.gz"), emptyMap, true},
+                {"NCBI", "1", null, new File ("\\TSV\\valid.tsv.gz"), emptyMap, false},
         });
     }
 
