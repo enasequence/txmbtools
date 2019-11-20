@@ -29,15 +29,16 @@ public class FileExistsTests {
 
     @org.junit.Before
     public void setup() {
+        emptyValidationResult = new ValidationResult(new File("manifest_validation_test.report"));
         mrv = new MetadataRecordValidator(emptyValidationResult, "void", "void", nonFile, nonFile, emptyMap);
     }
 
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][] {
-                {(TESTRESOURCEDIR + "\\TSV\\valid.tsv.gz"), true},
-                {(TESTRESOURCEDIR + "made_up_file"), false},
-                {null, false},
+                {new File(TESTRESOURCEDIR + "\\TSV\\valid.tsv.gz"), true},
+                {new File(TESTRESOURCEDIR + "made_up_file"), false},
+                {new File(""), false},
         });
     }
 
