@@ -43,10 +43,6 @@ public class MetadataTableValidator {
         this.customColumns = customColumns;
     }
 
-    public MetadataTableValidator() {
-
-    }
-
     public ValidationResult validateMetadataTable() {
 
         CSVParser metadataTableParser = openMetadataTable(this.metadataTableFilename);
