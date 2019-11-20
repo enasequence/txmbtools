@@ -18,8 +18,8 @@ public class ValidateTaxonomySystemTests {
     private MetadataRecordValidator mrv;
     private ValidationResult emptyValidationResult;
     private File nonFile;
-    boolean expectedResult;
-    boolean expectedNcbi;
+    private boolean expectedResult;
+    private boolean expectedNcbi;
     private static final HashMap<String, String> emptyMap = new HashMap<String, String>();
 
     String taxonomySystem;
@@ -39,17 +39,17 @@ public class ValidateTaxonomySystemTests {
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][] {
-//                {"NCBI", true, true},
-//                {"ncbi", true, true},
+                {"NCBI", true, true},
+                {"ncbi", true, true},
                 {"ncbi taxonomy", true, true},
-//                {"ncbiTax", true, true},
-//                {"nCbItAx", true, true},
+                {"ncbiTax", true, true},
+                {"nCbItAx", true, true},
                 {"A taxonomy database", true, false},
-//                {"tax_db_77", true, false},
-//                {"reallylongnameofatleast50charactersisthisenoughofthemyet", false, false},
-//                {"!\\\"£$%^&*()", false, false},
-//                {"", false, false},
-//                {null, false, false}
+                {"tax_db_77", true, false},
+                {"reallylongnameofatleast50charactersisthisenoughofthemyet", false, false},
+                {"!\\\"£$%^&*()", false, false},
+                {"", false, false},
+                {null, false, false}
         });
     }
 
