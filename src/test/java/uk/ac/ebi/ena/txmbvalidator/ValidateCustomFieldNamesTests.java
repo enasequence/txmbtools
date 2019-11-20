@@ -15,7 +15,7 @@ public class ValidateCustomFieldNamesTests {
     private ValidationResult emptyValidationResult;
     private File nonFile;
     private Map<String, String> customFields;
-    boolean expected;
+    private boolean expected;
     private static final HashMap<String, String> emptyMap = new HashMap<String, String>();
     private static final HashMap<String, String> validCustomCols = new HashMap<String, String>() {{
         put("Annotation", "Source of annotation");

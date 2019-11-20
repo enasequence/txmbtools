@@ -46,18 +46,24 @@ public class MetadataRecordValidator {
         this.customFields = customFields;
     }
 
-    public void validateMetadataRecord() {
+    public boolean validateMetadataRecord() {
+        this.ncbiTax = validateTaxonomySystem(taxonomySystem);
+        validateTaxonomySystemVersion(taxonomySystemVersion);
+        fileExists(fastaFile, "FASTA");
+        fileExists(metadataTableFile, "TSV");
+        validateCustomFieldNames(customFields);
 
+        return ncbiTax;
     }
 
-    public void validateTaxonomySystem(String taxonomySystem) {
+    public boolean validateTaxonomySystem(String taxonomySystem) {
         ValidationOrigin validationOrigin = new ValidationOrigin("Manifest File", "Taxonomic System");
 
         if (taxonomySystem == null || taxonomySystem.isEmpty()) {
             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Must specify the database/authority from which taxon names and lineages are drawn");
             validationMessage.appendOrigin(validationOrigin);
             manifestValidationResult.add(validationMessage);
-            return;
+            return false;
         }
 
         if (taxonomySystem.length() > 50) {
@@ -77,12 +83,11 @@ public class MetadataRecordValidator {
 
         for (String synonym : ncbiTaxSynonyms) {
             if (synonym.equalsIgnoreCase(taxonomySystem)) {
-                this.ncbiTax = true;
-                return;
+                return true;
             }
         }
 
-        this.ncbiTax = false;
+        return false;
     }
 
     public void validateTaxonomySystemVersion(String taxonomySystemVersion) {
@@ -110,6 +115,13 @@ public class MetadataRecordValidator {
 
     public void fileExists(File fileToCheck, String fileType) {
         ValidationOrigin validationOrigin = new ValidationOrigin("Manifest File", fileType);
+
+        if (fileToCheck == null) {
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, ("Must specify a file of type " + fileType));
+            validationMessage.appendOrigin(validationOrigin);
+            manifestValidationResult.add(validationMessage);
+            return;
+        }
 
         if (!fileToCheck.exists()) {
             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, ("Could not find " + fileType + " file '" + fileToCheck.getName() + "'"));
