@@ -55,8 +55,8 @@ public class ValidateTaxonomySystemTests {
 
     @org.junit.Test
     public void ValidateTaxonomySystem() {
-        mrv.validateTaxonomySystem(taxonomySystem);
+        boolean ncbiTaxActual = mrv.validateTaxonomySystem(taxonomySystem);
         assertEquals(expectedResult, mrv.getValid());
-        assertEquals(expectedNcbi, mrv.isNcbiTax());
+        assertEquals(expectedNcbi, ncbiTaxActual);
     }
 }
