@@ -38,12 +38,14 @@ public class ValidateCustomFieldNamesTests {
 
     @org.junit.Before
     public void setup() {
+        emptyValidationResult = new ValidationResult(new File("manifest_validation_test.report"));
         mrv = new MetadataRecordValidator(emptyValidationResult, "void", "void", nonFile, nonFile, emptyMap);
     }
 
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][] {
+                {emptyMap, true},
                 {validCustomCols, true},
                 {tooLongCustomCols, false},
                 {badCharsCustomCols, false}
