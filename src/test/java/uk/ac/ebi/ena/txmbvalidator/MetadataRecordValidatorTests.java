@@ -7,33 +7,28 @@ public class MetadataRecordValidatorTests {
 
     @org.junit.Test
     public void validateMetadataRecord(){
-        Result validateMetadataRecordResult = JUnitCore.runClasses(ValidateMetadataRecordTests.class); // TODO
-        assert(validateMetadataRecordResult.wasSuccessful());
+        Result validateMetadataRecordResult = JUnitCore.runClasses(ValidateMetadataRecordTests.class);
+
     }
 
     @org.junit.Test
     public void validateTaxonomySystem(){
-        Result validateTaxonomySystemResult = JUnitCore.runClasses(ValidateTaxonomySystemTests.class); // TODO: RUN
+        Result validateTaxonomySystemResult = JUnitCore.runClasses(ValidateTaxonomySystemTests.class);
     }
 
     @org.junit.Test
     public void validateTaxonomySystemVersion() {
-        Result validateTaxonomySystemVersionResult = JUnitCore.runClasses(ValidateTaxonomySystemVersionTests.class); // TODO: RUN
+        Result validateTaxonomySystemVersionResult = JUnitCore.runClasses(ValidateTaxonomySystemVersionTests.class);
     }
 
     @org.junit.Test
-    public void existsFastaFile() {
-        Result validateTaxonomySystemVersionResult = JUnitCore.runClasses(ExistsFastaFileTests.class); // TODO
-    }
-
-    @org.junit.Test
-    public void existsMetadataTableFile() {
-        Result existsMetadataTableFileResult = JUnitCore.runClasses(ExistsMetadataTableFileTests.class); // TODO
+    public void fileExists() {
+        Result fileExistsResult = JUnitCore.runClasses(FileExistsTests.class);
     }
 
     @org.junit.Test
     public void validateCustomFieldNames() {
-        Result validateCustomFieldNamesResult = JUnitCore.runClasses(ValidateCustomFieldNamesTests.class); // TODO
+        Result validateCustomFieldNamesResult = JUnitCore.runClasses(ValidateCustomFieldNamesTests.class);
     }
 
 }

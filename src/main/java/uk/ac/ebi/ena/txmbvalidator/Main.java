@@ -36,49 +36,16 @@ public class Main {
         ReadsManifest ma;
         TaxRefSetManifest mb = new TaxRefSetManifest();
 
+        File temp = new File("C:\\Users\\holt\\IdeaProjects\\txmb-validator\\src\\test\\resources\\TSV\\empty_id_column.tsv.gz");
+        boolean exists = temp.exists();
+        System.out.println("Existence of the file is: " + exists);
 
+        String empty = null;
+        System.out.println(empty.length());
     }
 
-    public static void arrayPlay(List<String> keys) {
-        System.out.println(keys);
-    }
 
-    public static void doStuff() {
-        MetadataTableValidator mtv = new MetadataTableValidator();
-        for (MetadataTableValidator.MandatoryHeaders header : MetadataTableValidator.MandatoryHeaders.values()){
-            //System.out.println(header);
-        }
 
-        List<String> headers = new ArrayList<String>();
-        headers.addAll(csvHandleTrial());
-        headers.add("colName1");
-        headers.add("colName2");
-
-        customCols.put("colName1", "colDesc1");
-        customCols.put("colName2", "colDesc2");
-
-        for (MandatoryHeaders header : MandatoryHeaders.values()) {
-            assert(headers.contains(header));
-            System.out.println("Found " + header + " in file valid.tsv.gz");
-        }
-
-        System.out.println("\nBoop\n");
-
-        for (String colName : customCols.keySet()) {
-            assert(headers.contains(colName));
-            System.out.println("Found " + colName + " in file valid.tsv.gz");
-        }
-
-        int expectedColumnTotal = customCols.size() + MandatoryHeaders.values().length;
-        int actualColumnTotal = headers.size();
-
-        try {
-            assert(expectedColumnTotal == actualColumnTotal);
-            System.out.println("Total number of columns matches");
-        } catch (Exception e) {
-            System.out.println("Total number of columns does not match");
-        }
-    }
 
     public static List<String> csvHandleTrial() {
 

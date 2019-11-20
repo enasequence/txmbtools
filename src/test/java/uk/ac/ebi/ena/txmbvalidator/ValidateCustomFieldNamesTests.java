@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
+import java.io.File;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -12,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class ValidateCustomFieldNamesTests {
     private MetadataRecordValidator mrv;
     private ValidationResult emptyValidationResult;
+    private File nonFile;
     private Map<String, String> customFields;
     boolean expected;
     private static final HashMap<String, String> emptyMap = new HashMap<String, String>();
@@ -36,7 +38,7 @@ public class ValidateCustomFieldNamesTests {
 
     @org.junit.Before
     public void setup() {
-        mrv = new MetadataRecordValidator(emptyValidationResult, "void", "void", "void", "void", emptyMap);
+        mrv = new MetadataRecordValidator(emptyValidationResult, "void", "void", nonFile, nonFile, emptyMap);
     }
 
     @Parameterized.Parameters

@@ -4,10 +4,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,6 +16,7 @@ public class ValidateTaxonomySystemVersionTests {
 
     private MetadataRecordValidator mrv;
     private ValidationResult emptyValidationResult;
+    private File nonFile;
     boolean expected;
     private static final HashMap<String, String> emptyMap = new HashMap<String, String>();
 
@@ -28,7 +29,7 @@ public class ValidateTaxonomySystemVersionTests {
 
     @org.junit.Before
     public void setup() {
-        mrv = new MetadataRecordValidator(emptyValidationResult, "void", "void", "void", "void", emptyMap);
+        mrv = new MetadataRecordValidator(emptyValidationResult, "void", "void", nonFile, nonFile, emptyMap);
     }
 
     @Parameterized.Parameters

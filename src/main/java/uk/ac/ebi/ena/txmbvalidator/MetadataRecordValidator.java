@@ -4,10 +4,10 @@ import uk.ac.ebi.ena.webin.cli.validator.message.ValidationMessage;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationOrigin;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
+import java.lang.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +19,7 @@ public class MetadataRecordValidator {
     private File fastaFile;
     private File metadataTableFile;
     private Map<String,String> customFields;
-    private Pattern characterRegex = Pattern.compile("^[A-Za-z0-9_.-]+$");
+    private Pattern characterRegex = Pattern.compile("^[A-Za-z0-9_.\\- ]+$");
     private ArrayList<String> ncbiTaxSynonyms = new ArrayList<String>(){{
         add("ncbi");
         add("ncbi taxonomy");
@@ -75,9 +75,14 @@ public class MetadataRecordValidator {
             manifestValidationResult.add(validationMessage);
         }
 
-        if (ncbiTaxSynonyms.contains(taxonomySystem)) {
-            this.ncbiTax = true;
+        for (String synonym : ncbiTaxSynonyms) {
+            if (synonym.equalsIgnoreCase(taxonomySystem)) {
+                this.ncbiTax = true;
+                return;
+            }
         }
+
+        this.ncbiTax = false;
     }
 
     public void validateTaxonomySystemVersion(String taxonomySystemVersion) {
