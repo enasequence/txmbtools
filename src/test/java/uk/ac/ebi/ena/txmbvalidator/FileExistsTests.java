@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class FileExistsTests {
 
-    private static final String TESTRESOURCEDIR = "C:\\Users\\holt\\IdeaProjects\\txmb-validator\\src\\test\\resources";
+    private static final String TESTRESOURCEDIR = "src\\test\\resources";
     private MetadataRecordValidator mrv;
     private ValidationResult emptyValidationResult;
     private File nonFile;

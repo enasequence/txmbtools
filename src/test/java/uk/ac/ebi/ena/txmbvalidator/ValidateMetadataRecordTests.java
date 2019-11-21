@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class ValidateMetadataRecordTests {
 
-    private static final String TESTRESOURCEDIR = "C:\\Users\\holt\\IdeaProjects\\txmb-validator\\src\\test\\resources";
+    private static final String TESTRESOURCEDIR = "src\\test\\resources";
     MetadataRecordValidator vmr;
     ValidationResult emptyValidationResult;
     boolean expected;

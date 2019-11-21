@@ -196,4 +196,8 @@ public class FastaValidator {
             fastaValidationResult.add(validationMessage);
         }
     }
+
+    public boolean getValid() {
+        return fastaValidationResult.isValid();
+    }
 }
