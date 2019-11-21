@@ -25,7 +25,7 @@ public class ValidateTxmbTests {
     public void testValidManifest() {
         TaxRefSetManifest validManifest = new TaxRefSetManifest();
 
-        validManifest.setName("validName");
+        validManifest.setName("testValidManifest");
         validManifest.setDescription("Description");
         validManifest.setTaxonomySystem("NCBI");
         validManifest.setTaxonomySystemVersion("");
@@ -46,7 +46,7 @@ public class ValidateTxmbTests {
     public void testValidManifestWithCustoms() {
         TaxRefSetManifest validManifestWithCustoms = new TaxRefSetManifest();
 
-        validManifestWithCustoms.setName("validName");
+        validManifestWithCustoms.setName("testValidManifestWithCustoms");
         validManifestWithCustoms.setDescription("Description");
         validManifestWithCustoms.setTaxonomySystem("NCBI");
         validManifestWithCustoms.setTaxonomySystemVersion("");
@@ -71,7 +71,7 @@ public class ValidateTxmbTests {
     public void testManifestInvalidFasta() {
         TaxRefSetManifest manifestInvalidFasta = new TaxRefSetManifest();
 
-        manifestInvalidFasta.setName("validName");
+        manifestInvalidFasta.setName("testManifestInvalidFasta");
         manifestInvalidFasta.setDescription("Description");
         manifestInvalidFasta.setTaxonomySystem("NCBI");
         manifestInvalidFasta.setTaxonomySystemVersion("");
@@ -92,7 +92,7 @@ public class ValidateTxmbTests {
     public void testManifestInvalidTab() {
         TaxRefSetManifest manifestInvalidTab = new TaxRefSetManifest();
 
-        manifestInvalidTab.setName("validName");
+        manifestInvalidTab.setName("testManifestInvalidTab");
         manifestInvalidTab.setDescription("Description");
         manifestInvalidTab.setTaxonomySystem("NCBI");
         manifestInvalidTab.setTaxonomySystemVersion("");
@@ -113,9 +113,30 @@ public class ValidateTxmbTests {
     public void testManifestInavlidTaxSys() {
         TaxRefSetManifest manifestInvalidTaxSys = new TaxRefSetManifest();
 
-        manifestInvalidTaxSys.setName("validName");
+        manifestInvalidTaxSys.setName("testManifestInavlidTaxSys");
         manifestInvalidTaxSys.setDescription("Description");
         manifestInvalidTaxSys.setTaxonomySystem("NCBI!!!");
+        manifestInvalidTaxSys.setTaxonomySystemVersion("");
+
+        SubmissionFiles validFiles = new SubmissionFiles();
+        SubmissionFile fasta = new SubmissionFile(TaxRefSetManifest.FileType.FASTA, new File((RESOURCEFASTADIR+"valid.fasta.gz")));
+        validFiles.add(fasta);
+        SubmissionFile tab = new SubmissionFile(TaxRefSetManifest.FileType.TAB, new File((RESOURCETSVDIR+"valid.tsv.gz")));
+        validFiles.add(tab);
+        manifestInvalidTaxSys.setFiles(validFiles);
+
+        txv = new TxmbValidator();
+        boolean validationResult = txv.validateTxmb(manifestInvalidTaxSys);
+        assertFalse(validationResult);
+    }
+
+    @Test
+    public void testNcbiTaxMismatch() {
+        TaxRefSetManifest manifestInvalidTaxSys = new TaxRefSetManifest();
+
+        manifestInvalidTaxSys.setName("testNcbiTaxMismatch");
+        manifestInvalidTaxSys.setDescription("Description");
+        manifestInvalidTaxSys.setTaxonomySystem("Some-other-database");
         manifestInvalidTaxSys.setTaxonomySystemVersion("");
 
         SubmissionFiles validFiles = new SubmissionFiles();

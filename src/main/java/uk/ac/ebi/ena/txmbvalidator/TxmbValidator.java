@@ -39,11 +39,12 @@ public class TxmbValidator implements Validator<Manifest, ValidationResponse> {
         HashMap<String, String> customFields = (HashMap) txmbManifest.getCustomFields();
         SubmissionFiles submissionFiles = txmbManifest.getFiles();
 
-        List<File> inputFastaFiles = submissionFiles.get(TaxRefSetManifest.FileType.FASTA);
-        File fastaFile = inputFastaFiles.get(0);
+        List<SubmissionFile> inputFastaFiles = submissionFiles.get(TaxRefSetManifest.FileType.FASTA);
+        File fastaFile = inputFastaFiles.get(0).getFile();
 
-        List<File> inputTabFiles = submissionFiles.get(TaxRefSetManifest.FileType.TAB);
-        File tabFile = inputTabFiles.get(0);
+
+        List<SubmissionFile> inputTabFiles = submissionFiles.get(TaxRefSetManifest.FileType.TAB);
+        File tabFile = inputTabFiles.get(0).getFile();
 
         File manifestReportFile = new File(txmbManifest.getName() + ".report");
         manifestValidationResult = new ValidationResult(manifestReportFile);
