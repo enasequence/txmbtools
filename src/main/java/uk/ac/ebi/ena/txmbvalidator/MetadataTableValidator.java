@@ -18,7 +18,7 @@ import java.util.zip.GZIPInputStream;
 public class MetadataTableValidator {
 
     private ValidationResult metadataTableValidationResult;
-    private String metadataTableFilename;
+    private File metadataTableFile;
     private File metadataTableLogFile;
     private HashMap<String, String> customColumns;
     private ArrayList<String> localIdentifiers = new ArrayList<String>();
@@ -35,19 +35,19 @@ public class MetadataTableValidator {
     }
 
 
-    public MetadataTableValidator(String metadataTableFilename, ValidationResult manifestValidationResult, boolean ncbiTax, HashMap<String, String> customColumns) {
-        this.metadataTableFilename = metadataTableFilename;
-        this.metadataTableLogFile = new File(metadataTableFilename + ".report"); // TODO: Add more detailed path?
+    public MetadataTableValidator(File metadataTableFile, ValidationResult manifestValidationResult, boolean ncbiTax, HashMap<String, String> customColumns) {
+        this.metadataTableFile = metadataTableFile;
+        this.metadataTableLogFile = new File(metadataTableFile + ".report"); // TODO: Add more detailed path?
         this.metadataTableValidationResult = new ValidationResult(manifestValidationResult, metadataTableLogFile);
         this.ncbiTax = ncbiTax;
         this.customColumns = customColumns;
     }
 
-    public ValidationResult validateMetadataTable() {
+    public void validateMetadataTable() {
 
-        CSVParser metadataTableParser = openMetadataTable(this.metadataTableFilename);
+        CSVParser metadataTableParser = openMetadataTable(this.metadataTableFile);
         if (!this.getValid()) {
-            return null;
+            return;
         }
 
         List<String> fileHeaders = getHeaderList(metadataTableParser);
@@ -56,7 +56,7 @@ public class MetadataTableValidator {
         validateMandatoryHeaders(fileHeaders);
         validateCustomHeaders(fileHeaders, customColumns);
         if (!this.getValid()) {
-            return null;
+            return;
         }
 
         String localIdentifier;
@@ -70,28 +70,25 @@ public class MetadataTableValidator {
                 ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Full set of columns must be provided even if value is null");
                 validationMessage.appendOrigin(validationOrigin);
                 metadataTableValidationResult.add(validationMessage);
-                return null;
             }
         }
-
-        return this.metadataTableValidationResult; // TODO: Probably change this, result is already accessible through MetadataTableValidator object
     }
 
-    public CSVParser openMetadataTable(String metadataTableFilename) {
+    public CSVParser openMetadataTable(File metadataTableFile) {
         ValidationOrigin validationOrigin = new ValidationOrigin("Sequence Metadata Table", "Decompressing");
         BufferedReader metadataTableReader;
         CSVParser metadataTableParser;
 
         try {
-            metadataTableReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(metadataTableFilename))));
+            metadataTableReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(metadataTableFile))));
             metadataTableParser = CSVParser.parse(metadataTableReader, CSVFormat.TDF.withFirstRecordAsHeader());
         } catch (FileNotFoundException ex) {
-            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "'" + this.metadataTableFilename + "' could not be found");
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "'" + this.metadataTableFile + "' could not be found");
             validationMessage.appendOrigin(validationOrigin);
             metadataTableValidationResult.add(validationMessage);
             return null;
         } catch (IOException ex) {
-            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "'" + this.metadataTableFilename + "' could not be read");
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "'" + this.metadataTableFile + "' could not be read");
             validationMessage.appendOrigin(validationOrigin);
             metadataTableValidationResult.add(validationMessage);
             return null;

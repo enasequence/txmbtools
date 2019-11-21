@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
+import java.io.File;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,7 +43,7 @@ public class ValidateRecordTests {
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false, noCols);
+        mtv = new MetadataTableValidator(new File("NOT_APPLICABLE"), emptyValidationResult, false, noCols);
     }
 
     @Parameterized.Parameters

@@ -9,6 +9,7 @@ import uk.ac.ebi.ena.webin.cli.validator.manifest.TaxRefSetManifest;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,20 +54,21 @@ public class TxmbValidator implements Validator<Manifest, ValidationResponse> {
             return false;
         }
 
-//        vmt = new MetadataTableValidator(tabFile, manifestValidationResult, ncbiTax, customFields);
-//        vmt.validateMetadataTable();
-//        if (!vmt.getValid()) {
-//            return false;
-//        }
-//
-//        vfa = new FastaValidator(fastaFile, customFields, manifestValidationResult);
-//        vfa.validateFasta();
-//
-//        if (vfa.getValid()) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-        return false;
+        vmt = new MetadataTableValidator(tabFile, manifestValidationResult, ncbiTax, customFields);
+        vmt.validateMetadataTable();
+        if (!vmt.getValid()) {
+            return false;
+        }
+
+        ArrayList<String> tableIdentifiers = vmt.getLocalIdentifiers();
+
+        vfa = new FastaValidator(fastaFile, tableIdentifiers, manifestValidationResult);
+        vfa.validateFasta();
+
+        if (vfa.getValid()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

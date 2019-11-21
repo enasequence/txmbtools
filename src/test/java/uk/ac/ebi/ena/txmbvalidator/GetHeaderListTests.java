@@ -19,35 +19,35 @@ public class GetHeaderListTests {
 
     private static final String RESOURCETSVDIR = "src\\test\\resources\\TSV\\";
     private MetadataTableValidator mtv;
-    private String metadataTableFilename;
+    private File metadataTableFile;
     private boolean expected;
     private CSVParser parser;
     private static final HashMap<String, String> noCols = new HashMap<>();
 
-    public GetHeaderListTests(String metadataTableFilename, boolean expected) {
-        this.metadataTableFilename = metadataTableFilename;
+    public GetHeaderListTests(File metadataTableFile, boolean expected) {
+        this.metadataTableFile = metadataTableFile;
         this.expected = expected;
     }
 
     @org.junit.Before
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
-        mtv = new MetadataTableValidator("NOT_APPLICABLE", emptyValidationResult, false, noCols);
+        mtv = new MetadataTableValidator(new File("NOT_APPLICABLE"), emptyValidationResult, false, noCols);
     }
 
     @Parameterized.Parameters
     public static Collection<Object[]> testConditions() {
         return Arrays.asList(new Object[][]{
-                {(RESOURCETSVDIR + "valid.tsv.gz"), true},
-                {(RESOURCETSVDIR + "valid_w_customs.tsv.gz"), true},
-                {(RESOURCETSVDIR + "missing_id_column.tsv.gz"), true}
+                {new File(RESOURCETSVDIR + "valid.tsv.gz"), true},
+                {new File(RESOURCETSVDIR + "valid_w_customs.tsv.gz"), true},
+                {new File(RESOURCETSVDIR + "missing_id_column.tsv.gz"), true}
         });
     }
 
     @org.junit.Test
     public void getHeaderList() {
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(metadataTableFilename))));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(metadataTableFile))));
             parser = CSVParser.parse(br, CSVFormat.TDF.withFirstRecordAsHeader());
         } catch (FileNotFoundException e) {
             System.out.println("FileNotFoundException occurred in GetHeaderListTests test case");
