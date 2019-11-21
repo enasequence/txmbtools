@@ -21,7 +21,8 @@ public class TxmbValidator implements Validator<Manifest, ValidationResponse> {
     }
 
     public boolean validateTxmb(Manifest manifest) {
-
+        TaxRefSetManifest other = (TaxRefSetManifest) manifest;
+        other.
 //        Run metadata record validator, get back ncbi tax bool
 //          Return false if not valid
 //        Run metadata table valiator, get back local identifiers -> getLocalIdentifiers() ( ArrayList<String> )
@@ -33,3 +34,5 @@ public class TxmbValidator implements Validator<Manifest, ValidationResponse> {
         return false;
     }
 }
+
+//taxrefsetmanifestreader.java - WebinCli

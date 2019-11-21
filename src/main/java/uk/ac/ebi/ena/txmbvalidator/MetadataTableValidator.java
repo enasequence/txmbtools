@@ -252,7 +252,7 @@ public class MetadataTableValidator {
         if (validRange) {
             return;
         } else {
-            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence range invalid, must match regex '^<?\\d+\\.\\.>?\\d+$'");
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence range invalid, must match regex '" + sequenceRangePattern.pattern() +"'");
             validationMessage.appendOrigin(validationOrigin);
             metadataTableValidationResult.add(validationMessage);
         }
