@@ -3,38 +3,32 @@ package uk.ac.ebi.ena.txmbvalidator;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 
+import static junit.framework.TestCase.assertTrue;
+
 public class FastaValidatorTest {
 
     @org.junit.Test
     public void validateFasta() {
         Result validateFastaResult = JUnitCore.runClasses(ValidateFastaTests.class);
-        if (validateFastaResult.wasSuccessful()) {
-            System.out.println("validateFasta tests passed");
-        }
+        assertTrue(validateFastaResult.wasSuccessful());
     }
 
     @org.junit.Test
     public void openFasta() {
         Result openFastaResult = JUnitCore.runClasses(OpenFastaTests.class);
-        if (openFastaResult.wasSuccessful()) {
-            System.out.println("openFasta tests passed");
-        }
+        assertTrue(openFastaResult.wasSuccessful());
     }
 
     @org.junit.Test
     public void checkIdentifier() {
         Result checkIdentifierResult = JUnitCore.runClasses(CheckIdentifierTests.class);
-        if (checkIdentifierResult.wasSuccessful()) {
-            System.out.println("checkIdentifier tests passed");
-        }
+        assertTrue(checkIdentifierResult.wasSuccessful());
     }
 
     @org.junit.Test
     public void checkSequence() {
         Result checkSequenceTests = JUnitCore.runClasses(CheckSequenceTests.class);
-        if (checkSequenceTests.wasSuccessful()) {
-            System.out.println("checkSequence tests passed");
-        }
+        assertTrue(checkSequenceTests.wasSuccessful());
     }
 
 

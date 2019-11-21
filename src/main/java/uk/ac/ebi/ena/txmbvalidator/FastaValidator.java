@@ -15,14 +15,14 @@ public class FastaValidator {
     private int linecount = 0;
     private char lineflag = 's';
     private ArrayList<String> remainingIds;
-    private String fastaFilename;
+    private File fastaFile;
     private File fastaLogFile;
     private ValidationResult fastaValidationResult;
 
 
-    public FastaValidator(String fastaFilename, ArrayList<String> table_identifiers, ValidationResult manifestValidationResult) {
-        this.fastaFilename = (fastaFilename); // TODO: fix to work with input from manifest
-        this.fastaLogFile = new File(fastaFilename + ".report"); // TODO: Output Dir here?
+    public FastaValidator(File fastaFile, ArrayList<String> table_identifiers, ValidationResult manifestValidationResult) {
+        this.fastaFile = (fastaFile); // TODO: fix to work with input from manifest
+        this.fastaLogFile = new File(fastaFile + ".report"); // TODO: Output Dir here?
         this.remainingIds = table_identifiers;
         this.fastaValidationResult = new ValidationResult(manifestValidationResult, fastaLogFile);
     }
@@ -32,11 +32,10 @@ public class FastaValidator {
 
         String currentLine;
 
-        BufferedReader fastaReader = openFasta(this.fastaFilename, fastaValidationResult);
+        BufferedReader fastaReader = openFasta(this.fastaFile);
         if (!fastaValidationResult.isValid()) {
             return fastaValidationResult; // if an error was found in openFasta() then attempting further validation is pointless
         }
-
 
         try {
             while ((currentLine = fastaReader.readLine()) != null) {
@@ -54,7 +53,7 @@ public class FastaValidator {
                 if (currentLine.charAt(0) == '>') {
                         if (lineflag == 's') {
                             lineflag = 'i';
-                            checkIdentifier(currentLine, remainingIds, fastaValidationResult);
+                            checkIdentifier(currentLine, remainingIds);
                         } else {
                             ValidationOrigin validationOrigin = new ValidationOrigin("FASTA File", linecount);
                             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Two consecutive ID lines (\">\") in FASTA ");
@@ -63,7 +62,7 @@ public class FastaValidator {
                         }
                 } else if (lineflag == 'i') {
                     lineflag = 's';
-                    checkSequence(currentLine, fastaValidationResult);
+                    checkSequence(currentLine);
                 } else if (lineflag == 's') {
                     ValidationOrigin validationOrigin = new ValidationOrigin("FASTA File", linecount);
                     ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Two consecutive sequence lines in FASTA ");
@@ -72,14 +71,14 @@ public class FastaValidator {
                 }
             }
         } catch ( IOException ex ) {
-            ValidationOrigin validationOrigin = new ValidationOrigin("FASTA File", fastaFilename);
+            ValidationOrigin validationOrigin = new ValidationOrigin("FASTA File", fastaFile);
             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Could not read line");
             validationMessage.appendOrigin(validationOrigin);
             fastaValidationResult.add(validationMessage);
         }
 
         if (linecount % 2 != 0) {
-            ValidationOrigin validationOrigin = new ValidationOrigin("FASTA File", fastaFilename);
+            ValidationOrigin validationOrigin = new ValidationOrigin("FASTA File", fastaFile);
             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Input FASTA does not contain an even number of lines");
             validationMessage.appendOrigin(validationOrigin);
             fastaValidationResult.add(validationMessage);
@@ -98,16 +97,22 @@ public class FastaValidator {
     }
 
 
-    public BufferedReader openFasta(String fastaFilename, ValidationResult fastaValidationResult) {
+    public BufferedReader openFasta(File fastaFile) {
 
         BufferedReader fastaReader = null;
 
         try {
-            GZIPInputStream gzip = new GZIPInputStream(new FileInputStream(fastaFilename));
+            assert(fastaFile.exists());
+            GZIPInputStream gzip = new GZIPInputStream(new FileInputStream(fastaFile));
             fastaReader = new BufferedReader(new InputStreamReader(gzip));
+        } catch ( AssertionError ex ) {
+            ValidationOrigin validationOrigin = new ValidationOrigin("FASTA File", fastaFile);
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Could not find file");
+            validationMessage.appendOrigin(validationOrigin);
+            fastaValidationResult.add(validationMessage);
         } catch ( IOException ex ) {
-            ValidationOrigin validationOrigin = new ValidationOrigin("FASTA File", fastaFilename);
-            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Could not find or could not read file");
+            ValidationOrigin validationOrigin = new ValidationOrigin("FASTA File", fastaFile);
+            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Could not read file");
             validationMessage.appendOrigin(validationOrigin);
             fastaValidationResult.add(validationMessage);
         }
@@ -116,7 +121,7 @@ public class FastaValidator {
     }
 
 
-    public void checkIdentifier(String idLine, ArrayList<String> remainingIds, ValidationResult fastaValidationResult) {
+    public void checkIdentifier(String idLine, ArrayList<String> remainingIds) {
 
         boolean idCaught;
         int index;
@@ -144,35 +149,27 @@ public class FastaValidator {
         try {
             identifier = idLine.substring(idLine.indexOf(">") + 1, idLine.indexOf("|"));
             return identifier;
-        } catch (StringIndexOutOfBoundsException e) {
-            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Could not find appropriately formatted sequence identifier");
-            ValidationOrigin validationOrigin = new ValidationOrigin(originName, linecount);
-            validationMessage.appendOrigin(validationOrigin);
-            fastaValidationResult.add(validationMessage);
-        }
-
-        try {
-            identifier = idLine.substring(idLine.indexOf(">") + 1);
-            return identifier;
-        } catch (StringIndexOutOfBoundsException e) {
-            ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Could not find appropriately formatted sequence identifier");
-            ValidationOrigin validationOrigin = new ValidationOrigin(originName, linecount);
-            validationMessage.appendOrigin(validationOrigin);
-            fastaValidationResult.add(validationMessage);
+        } catch ( StringIndexOutOfBoundsException ex1 ) {
+            try {
+                identifier = idLine.substring(idLine.indexOf(">") + 1);
+                return identifier;
+            } catch ( StringIndexOutOfBoundsException ex2 ) {
+                ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Could not find appropriately formatted sequence identifier");
+                ValidationOrigin validationOrigin = new ValidationOrigin(originName, linecount);
+                validationMessage.appendOrigin(validationOrigin);
+                fastaValidationResult.add(validationMessage);
+            }
         }
 
         return null;
     }
 
 
-    public void checkSequence(String sequence, ValidationResult fastaValidationResult) {
+    public void checkSequence(String sequence) {
 
-        boolean validSequence = true;
         String orginName = "FASTA Seq Line";
 
-
         if (sequence.isEmpty()) {
-            validSequence = false;
             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Empty sequence line");
             ValidationOrigin validationOrigin = new ValidationOrigin(orginName, linecount);
             validationMessage.appendOrigin(validationOrigin);
@@ -181,7 +178,6 @@ public class FastaValidator {
         }
 
         if (!sequence.matches(NUCLEOTIDE_REGEX)) {
-            validSequence = false;
             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence contains invalid characters");
             ValidationOrigin validationOrigin = new ValidationOrigin(orginName, linecount);
             validationMessage.appendOrigin(validationOrigin);
@@ -189,7 +185,6 @@ public class FastaValidator {
         }
 
         if (sequence.matches("\\s")) {
-            validSequence = false;
             ValidationMessage validationMessage = new ValidationMessage(ValidationMessage.Severity.ERROR, "Sequence contains illegal whitespace");
             ValidationOrigin validationOrigin = new ValidationOrigin(orginName, linecount);
             validationMessage.appendOrigin(validationOrigin);

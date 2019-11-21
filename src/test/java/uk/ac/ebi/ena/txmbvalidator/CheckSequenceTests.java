@@ -5,6 +5,7 @@ import org.junit.runners.Parameterized;
 import static org.junit.Assert.assertEquals;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,7 +28,7 @@ public class CheckSequenceTests {
         ArrayList<String> empty_list = new ArrayList<String>();
         ValidationResult emptyValidationResult = new ValidationResult();
         fastaSequenceValidationResult = new ValidationResult();
-        fav = new FastaValidator("NOT_APPLICABLE", empty_list, emptyValidationResult);
+        fav = new FastaValidator(new File("NOT_APPLICABLE"), empty_list, emptyValidationResult);
     }
 
     @Parameterized.Parameters
@@ -43,7 +44,7 @@ public class CheckSequenceTests {
 
     @org.junit.Test
     public void checkSequence() {
-        fav.checkSequence(sequence, fastaSequenceValidationResult);
-        assertEquals(expected, fastaSequenceValidationResult.isValid());
+        fav.checkSequence(sequence);
+        assertEquals(expected, fav.getValid());
     }
 }

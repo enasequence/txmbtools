@@ -5,6 +5,7 @@ import org.junit.runners.Parameterized;
 import static org.junit.Assert.assertEquals;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,12 +37,12 @@ public class ValidateFastaTests {
                     "ITS1DB00588025",
                     "ITS1DB00588022"));
     private static ArrayList<String> expectedIdentifiers;
-    private String fasta;
+    private File fasta;
     private boolean expected;
 
 
     public ValidateFastaTests(String fasta, ArrayList<String> expectedIdentifiers, boolean expected) {
-        this.fasta = fasta;
+        this.fasta = new File(fasta);
         this.expectedIdentifiers = expectedIdentifiers;
         this.fastaValidationResult = new ValidationResult();
         this.expected = expected;

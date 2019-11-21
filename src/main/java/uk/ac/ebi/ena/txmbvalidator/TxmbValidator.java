@@ -53,19 +53,20 @@ public class TxmbValidator implements Validator<Manifest, ValidationResponse> {
             return false;
         }
 
-        vmt = new MetadataTableValidator(tabFile, manifestValidationResult, ncbiTax, customFields);
-        vmt.validateMetadataTable();
-        if (!vmt.getValid()) {
-            return false;
-        }
-
-        vfa = new FastaValidator(fastaFile, customFields, manifestValidationResult);
-        vfa.validateFasta();
-
-        if (vfa.getValid()) {
-            return true;
-        } else {
-            return false;
-        }
+//        vmt = new MetadataTableValidator(tabFile, manifestValidationResult, ncbiTax, customFields);
+//        vmt.validateMetadataTable();
+//        if (!vmt.getValid()) {
+//            return false;
+//        }
+//
+//        vfa = new FastaValidator(fastaFile, customFields, manifestValidationResult);
+//        vfa.validateFasta();
+//
+//        if (vfa.getValid()) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return false;
     }
 }

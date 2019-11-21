@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,7 +28,7 @@ public class CheckIdentifierTests {
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
         fastaIdentifierValidationResult = new ValidationResult();
-        fav = new FastaValidator("NOT_APPLICABLE", expectedIdentifiers, emptyValidationResult);
+        fav = new FastaValidator(new File("NOT_APPLICABLE"), expectedIdentifiers, emptyValidationResult);
         expectedIdentifiers.clear();
         expectedIdentifiers.add("ITS1DB00887249");
         expectedIdentifiers.add("ITS1DB00944432");
@@ -54,8 +55,8 @@ public class CheckIdentifierTests {
 
     @org.junit.Test
     public void checkIdentifier() {
-        fav.checkIdentifier(idLine, expectedIdentifiers, fastaIdentifierValidationResult);
-        assertEquals(expected, fastaIdentifierValidationResult.isValid());
+        fav.checkIdentifier(idLine, expectedIdentifiers);
+        assertEquals(expected, fav.getValid());
     }
 
 }
