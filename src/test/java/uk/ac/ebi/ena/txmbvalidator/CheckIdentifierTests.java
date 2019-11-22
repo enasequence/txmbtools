@@ -2,6 +2,8 @@ package uk.ac.ebi.ena.txmbvalidator;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import uk.ac.ebi.ena.webin.cli.validator.file.SubmissionFile;
+import uk.ac.ebi.ena.webin.cli.validator.manifest.TaxRefSetManifest;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.File;
@@ -28,7 +30,7 @@ public class CheckIdentifierTests {
     public void setup() {
         ValidationResult emptyValidationResult = new ValidationResult();
         fastaIdentifierValidationResult = new ValidationResult();
-        fav = new FastaValidator(new File("NOT_APPLICABLE"), expectedIdentifiers, emptyValidationResult);
+        fav = new FastaValidator(new SubmissionFile(TaxRefSetManifest.FileType.FASTA, new File("NOTAPPLICABLE")), expectedIdentifiers, emptyValidationResult);
         expectedIdentifiers.clear();
         expectedIdentifiers.add("ITS1DB00887249");
         expectedIdentifiers.add("ITS1DB00944432");

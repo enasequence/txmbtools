@@ -1,6 +1,9 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
 import static org.junit.Assert.*;
+
+import uk.ac.ebi.ena.webin.cli.validator.file.SubmissionFile;
+import uk.ac.ebi.ena.webin.cli.validator.manifest.TaxRefSetManifest;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.File;
@@ -17,7 +20,7 @@ public class OpenFastaTests {
         ArrayList<String> empty_list = new ArrayList<String>();
         ValidationResult emptyValidationResult = new ValidationResult();
         openFileValidationResult = new ValidationResult();
-        fav = new FastaValidator(new File("NOT_APPLICABLE"), empty_list, emptyValidationResult);
+        fav = new FastaValidator(new SubmissionFile(TaxRefSetManifest.FileType.FASTA, new File("NOTAPPLICABLE")), empty_list, emptyValidationResult);
 
     }
 

@@ -3,6 +3,10 @@ package uk.ac.ebi.ena.txmbvalidator;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import static org.junit.Assert.assertEquals;
+
+import uk.ac.ebi.ena.webin.cli.validator.file.SubmissionFile;
+import uk.ac.ebi.ena.webin.cli.validator.file.SubmissionFiles;
+import uk.ac.ebi.ena.webin.cli.validator.manifest.TaxRefSetManifest;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.File;
@@ -37,12 +41,12 @@ public class ValidateFastaTests {
                     "ITS1DB00588025",
                     "ITS1DB00588022"));
     private static ArrayList<String> expectedIdentifiers;
-    private File fasta;
+    private SubmissionFile fasta;
     private boolean expected;
 
 
     public ValidateFastaTests(String fasta, ArrayList<String> expectedIdentifiers, boolean expected) {
-        this.fasta = new File(fasta);
+        this.fasta = new SubmissionFile(TaxRefSetManifest.FileType.FASTA, new File(fasta));
         this.expectedIdentifiers = expectedIdentifiers;
         this.fastaValidationResult = new ValidationResult();
         this.expected = expected;

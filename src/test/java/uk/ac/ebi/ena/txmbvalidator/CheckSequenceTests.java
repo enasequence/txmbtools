@@ -3,6 +3,9 @@ package uk.ac.ebi.ena.txmbvalidator;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import static org.junit.Assert.assertEquals;
+
+import uk.ac.ebi.ena.webin.cli.validator.file.SubmissionFile;
+import uk.ac.ebi.ena.webin.cli.validator.manifest.TaxRefSetManifest;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.File;
@@ -28,7 +31,7 @@ public class CheckSequenceTests {
         ArrayList<String> empty_list = new ArrayList<String>();
         ValidationResult emptyValidationResult = new ValidationResult();
         fastaSequenceValidationResult = new ValidationResult();
-        fav = new FastaValidator(new File("NOT_APPLICABLE"), empty_list, emptyValidationResult);
+        fav = new FastaValidator(new SubmissionFile(TaxRefSetManifest.FileType.FASTA, new File("NOTAPPLICABLE")), empty_list, emptyValidationResult);
     }
 
     @Parameterized.Parameters

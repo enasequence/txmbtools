@@ -2,6 +2,8 @@ package uk.ac.ebi.ena.txmbvalidator;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import uk.ac.ebi.ena.webin.cli.validator.file.SubmissionFile;
+import uk.ac.ebi.ena.webin.cli.validator.manifest.TaxRefSetManifest;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.File;
@@ -16,7 +18,7 @@ public class ValidateMetadataTableTests {
 
     private static final String RESOURCETSVDIR = "src\\test\\resources\\TSV\\";
     private MetadataTableValidator mtv;
-    private File metadataTableFile;
+    private SubmissionFile metadataTableFile;
     private boolean ncbiTax;
     private boolean customColumnsUsed;
     private boolean expected;
@@ -27,7 +29,7 @@ public class ValidateMetadataTableTests {
     }};
 
     public ValidateMetadataTableTests(File metadataTableFilename, boolean ncbiTax, boolean customColumnsUsed, boolean expected) {
-        this.metadataTableFile = metadataTableFilename;
+        this.metadataTableFile = new SubmissionFile(TaxRefSetManifest.FileType.TAB, metadataTableFilename);
         this.ncbiTax = ncbiTax;
         this.customColumnsUsed = customColumnsUsed;
         this.expected = expected;
