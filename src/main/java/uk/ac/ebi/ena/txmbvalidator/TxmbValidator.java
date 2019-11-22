@@ -9,6 +9,7 @@ import uk.ac.ebi.ena.webin.cli.validator.manifest.TaxRefSetManifest;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,16 +41,16 @@ public class TxmbValidator implements Validator<Manifest, ValidationResponse> {
         SubmissionFiles submissionFiles = txmbManifest.getFiles();
 
         List<SubmissionFile> inputFastaFiles = submissionFiles.get(TaxRefSetManifest.FileType.FASTA);
-        File fastaFile = inputFastaFiles.get(0).getFile();
-
+        SubmissionFile fastaFile = inputFastaFiles.get(0);
+        fastaFile.setReportFile(Paths.get(txmbManifest.getReportFile().getPath()).resolve(fastaFile.getFile().getName() + ".report").toFile());
 
         List<SubmissionFile> inputTabFiles = submissionFiles.get(TaxRefSetManifest.FileType.TAB);
-        File tabFile = inputTabFiles.get(0).getFile();
+        SubmissionFile tabFile = inputTabFiles.get(0);
+        tabFile.setReportFile(Paths.get(txmbManifest.getReportFile().getPath()).resolve(tabFile.getFile().getName() + ".report").toFile());
 
-        File manifestReportFile = new File(txmbManifest.getName() + ".report");
-        manifestValidationResult = new ValidationResult(manifestReportFile);
+        manifestValidationResult = new ValidationResult(txmbManifest.getReportFile());
 
-        vmr = new MetadataRecordValidator(manifestValidationResult, taxSystem, taxSystemVersion, fastaFile, tabFile, customFields);
+        vmr = new MetadataRecordValidator(manifestValidationResult, taxSystem, taxSystemVersion, fastaFile.getFile(), tabFile.getFile(), customFields);
         boolean ncbiTax = vmr.validateMetadataRecord();
         if (!vmr.getValid()) {
             return false;
