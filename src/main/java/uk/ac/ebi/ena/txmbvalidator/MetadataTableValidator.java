@@ -3,6 +3,7 @@ package uk.ac.ebi.ena.txmbvalidator;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import uk.ac.ebi.ena.webin.cli.validator.file.SubmissionFile;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationMessage;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationOrigin;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
@@ -35,9 +36,9 @@ public class MetadataTableValidator {
     }
 
 
-    public MetadataTableValidator(File metadataTableFile, ValidationResult manifestValidationResult, boolean ncbiTax, HashMap<String, String> customColumns) {
-        this.metadataTableFile = metadataTableFile;
-        this.metadataTableLogFile = new File(metadataTableFile + ".report"); // TODO: Add more detailed path?
+    public MetadataTableValidator(SubmissionFile metadataTableFile, ValidationResult manifestValidationResult, boolean ncbiTax, HashMap<String, String> customColumns) {
+        this.metadataTableFile = metadataTableFile.getFile();
+        this.metadataTableLogFile = metadataTableFile.getReportFile();
         this.metadataTableValidationResult = new ValidationResult(manifestValidationResult, metadataTableLogFile);
         this.ncbiTax = ncbiTax;
         this.customColumns = customColumns;

@@ -1,6 +1,7 @@
 package uk.ac.ebi.ena.txmbvalidator;
 
 
+import uk.ac.ebi.ena.webin.cli.validator.file.SubmissionFile;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationMessage;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationOrigin;
 import uk.ac.ebi.ena.webin.cli.validator.message.ValidationResult;
@@ -20,9 +21,9 @@ public class FastaValidator {
     private ValidationResult fastaValidationResult;
 
 
-    public FastaValidator(File fastaFile, ArrayList<String> table_identifiers, ValidationResult manifestValidationResult) {
-        this.fastaFile = (fastaFile); // TODO: fix to work with input from manifest
-        this.fastaLogFile = new File(fastaFile + ".report"); // TODO: Output Dir here?
+    public FastaValidator(SubmissionFile fastaFile, ArrayList<String> table_identifiers, ValidationResult manifestValidationResult) {
+        this.fastaFile = fastaFile.getFile();
+        this.fastaLogFile = fastaFile.getReportFile();
         this.remainingIds = table_identifiers;
         this.fastaValidationResult = new ValidationResult(manifestValidationResult, fastaLogFile);
     }
