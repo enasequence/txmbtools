@@ -13,7 +13,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TxmbValidator implements Validator<Manifest, ValidationResponse> {
 
@@ -48,7 +47,7 @@ public class TxmbValidator implements Validator<Manifest, ValidationResponse> {
         SubmissionFile tabFile = inputTabFiles.get(0);
         tabFile.setReportFile(Paths.get(txmbManifest.getReportFile().getPath()).resolve(tabFile.getFile().getName() + ".report").toFile());
 
-        manifestValidationResult = new ValidationResult(txmbManifest.getReportFile());
+        manifestValidationResult = new ValidationResult(new File(txmbManifest.getReportFile().getPath()+".report"));
 
         vmr = new MetadataRecordValidator(manifestValidationResult, taxSystem, taxSystemVersion, fastaFile.getFile(), tabFile.getFile(), customFields);
         boolean ncbiTax = vmr.validateMetadataRecord();
