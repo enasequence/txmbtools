@@ -1,5 +1,0 @@
-REFERENCEDATASETNAME valid_f_missing_id_col_t
-LOCALTAXONOMY NCBI
-LOCALTAXONOMYVERSION
-FASTA Test_Files/valid.fasta.gz
-TABLE Test_Files/missing_id_column.tsv.gz

@@ -1,5 +1,0 @@
-REFERENCEDATASETNAME two_ids_f_valid_t
-LOCALTAXONOMY NCBI
-LOCALTAXONOMYVERSION
-FASTA Test_Files/two_ids.fasta.gz
-TABLE Test_Files/valid.tsv.gz

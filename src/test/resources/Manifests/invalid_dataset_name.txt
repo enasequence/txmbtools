@@ -1,5 +1,0 @@
-REFERENCEDATASETNAME invalid_dataset_namewhichihavemadetoolongandincludedsomejunkcharacters><)(-.=!)
-LOCALTAXONOMY NCBI
-LOCALTAXONOMYVERSION
-FASTA Test_Files/valid.fasta.gz
-TABLE Test_Files/valid.tsv.gz

@@ -1,5 +1,0 @@
-REFERENCEDATASETNAME empty_line_seq_f_valid_t
-LOCALTAXONOMY NCBI
-LOCALTAXONOMYVERSION
-FASTA Test_Files/empty_line_seq.fasta.gz
-TABLE Test_Files/valid.tsv.gz
