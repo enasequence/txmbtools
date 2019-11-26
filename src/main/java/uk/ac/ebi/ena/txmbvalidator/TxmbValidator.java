@@ -41,11 +41,9 @@ public class TxmbValidator implements Validator<Manifest, ValidationResponse> {
 
         List<SubmissionFile> inputFastaFiles = submissionFiles.get(TaxRefSetManifest.FileType.FASTA);
         SubmissionFile fastaFile = inputFastaFiles.get(0);
-        fastaFile.setReportFile(Paths.get(txmbManifest.getReportFile().getPath()).resolve(fastaFile.getFile().getName() + ".report").toFile());
 
         List<SubmissionFile> inputTabFiles = submissionFiles.get(TaxRefSetManifest.FileType.TAB);
         SubmissionFile tabFile = inputTabFiles.get(0);
-        tabFile.setReportFile(Paths.get(txmbManifest.getReportFile().getPath()).resolve(tabFile.getFile().getName() + ".report").toFile());
 
         manifestValidationResult = new ValidationResult(new File(txmbManifest.getReportFile().getPath()+".report"));
 
