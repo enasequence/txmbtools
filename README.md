@@ -1,6 +1,6 @@
 # ENA TXMB Tools
 
-This repository contains code for the validation of Taxonomic Reference Set    .
+This repository contains code for the validation of Taxonomic Reference Set 
 data type, added to ENA as part of ELIXIR Implementation Study Taxometabarcode. 
 This code is not intended for independent use but is included as part of the ENA
 submission tool, [Webin-CLI](https://ena-docs.readthedocs.io/en/latest/submit/general-guide/webin-cli.html).
