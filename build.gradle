@@ -5,7 +5,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 group 'uk.ac.ebi.ena.txmbtools'
-ext.version_base = '1.0.2'
+ext.version_base = '1.0.3'
 version = version_base
 
 ext.gitlab_project_id ='1784'
@@ -26,7 +26,7 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testImplementation( 'org.mockito:mockito-core:2.23.4' )
-    implementation( group: 'uk.ac.ebi.ena.webin-cli', name: 'webin-cli-validator', version: '1.0.8' )
+    implementation( group: 'uk.ac.ebi.ena.webin-cli', name: 'webin-cli-validator', version: '1.0.9' )
     compile( group: 'org.apache.commons', name: 'commons-csv', version: '1.7' )
     
 }
