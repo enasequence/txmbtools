@@ -72,6 +72,10 @@ public class ValidateFastaTests {
         });
     }
 
+    /**
+     * For some reason, this test fails when 'gradlew clean test' is run from Intellij's gradle panel but passes when
+     * right-clicked and run from context menu.
+     */
     @org.junit.Test
     public void validateFasta() {
         FastaValidator fav = new FastaValidator(fasta, expectedIdentifiers, fastaValidationResult);

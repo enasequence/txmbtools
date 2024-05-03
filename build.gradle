@@ -1,11 +1,9 @@
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'java-library'
 apply plugin: 'maven-publish'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
 
 group 'uk.ac.ebi.ena.txmbtools'
-ext.version_base = '1.0.3'
+ext.version_base = '1.1.0'
 version = version_base
 
 ext.gitlab_project_id ='1784'
@@ -20,15 +18,28 @@ wrapper {
 repositories {
     mavenLocal()
     maven { url "https://gitlab.ebi.ac.uk/api/v4/groups/enasequence/-/packages/maven" }
+    // For BioSamples client
+    maven {
+        url 'https://gitlab.ebi.ac.uk/api/v4/projects/2669/packages/maven'
+
+        credentials(HttpHeaderCredentials) {
+            name = "Private-Token"
+            value = biosamples_gitlab_private_token
+        }
+        authentication {
+            header(HttpHeaderAuthentication)
+        }
+    }
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    api( group: 'uk.ac.ebi.ena.webin-cli', name: 'webin-cli-validator', version: '1.+' )
+
+    implementation( group: 'org.apache.commons', name: 'commons-csv', version: '1.7' )
+
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation( 'org.mockito:mockito-core:2.23.4' )
-    implementation( group: 'uk.ac.ebi.ena.webin-cli', name: 'webin-cli-validator', version: '1.0.9' )
-    compile( group: 'org.apache.commons', name: 'commons-csv', version: '1.7' )
-    
 }
 
 task sourceJar(type: Jar) {
