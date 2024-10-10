@@ -1,40 +1,23 @@
-apply plugin: 'java'
-apply plugin: 'java-library'
-apply plugin: 'maven-publish'
-
-group 'uk.ac.ebi.ena.txmbtools'
-ext.version_base = '1.1.0'
-version = version_base
-
-ext.gitlab_project_id ='1784'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-wrapper {
-    gradleVersion = '5.2.1'
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
 }
+
+group = 'uk.ac.ebi.ena.txmbtools'
+version = '2.0.0'
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenLocal()
     maven { url "https://gitlab.ebi.ac.uk/api/v4/groups/enasequence/-/packages/maven" }
-    // For BioSamples client
-    maven {
-        url 'https://gitlab.ebi.ac.uk/api/v4/projects/2669/packages/maven'
-
-        credentials(HttpHeaderCredentials) {
-            name = "Private-Token"
-            value = biosamples_gitlab_private_token
-        }
-        authentication {
-            header(HttpHeaderAuthentication)
-        }
-    }
     mavenCentral()
 }
 
 dependencies {
-    api( group: 'uk.ac.ebi.ena.webin-cli', name: 'webin-cli-validator', version: '1.+' )
+    api( group: 'uk.ac.ebi.ena.webin-cli', name: 'webin-cli-validator', version: '2.+' )
 
     implementation( group: 'org.apache.commons', name: 'commons-csv', version: '1.7' )
 
@@ -48,16 +31,6 @@ task sourceJar(type: Jar) {
 }
 
 jar {
-    from {
-        configurations.compile.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
-        exclude("**/*.RSA")
-        exclude("**/*.SF")
-        configurations.runtime.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
-    }
     manifest {
         attributes(
                 'Implementation-Title': project.name,
@@ -78,7 +51,7 @@ publishing {
     repositories {
         maven {
             // Project specific maven repository in Gitlab.
-            url "https://gitlab.ebi.ac.uk/api/v4/projects/${gitlab_project_id}/packages/maven"
+            url "https://gitlab.ebi.ac.uk/api/v4/projects/1784/packages/maven"
             // Developer token in Gitlab.
             credentials(HttpHeaderCredentials) {
                 name = "Private-Token"
